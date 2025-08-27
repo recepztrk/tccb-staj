@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # 🐾 VetLine - Veteriner Kliniği Web Uygulaması
 
 [![.NET](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
@@ -165,3 +166,7 @@ Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosy
 ---
 
 ⭐ Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!
+=======
+# tccb-staj
+Cumhurbaşkanlığı Yazılım Daire Başkanlığı’nda yaptığım staj kapsamında geliştirdiğim projeler ve ek çalışmalar.
+>>>>>>> c5ffd968022cb99471689e3721830ed65f11bf40
