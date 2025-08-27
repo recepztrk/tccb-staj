@@ -1,0 +1,327 @@
+﻿<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - VetLine Veteriner Kliniği</title>
+    <link rel="icon" type="image/x-icon" href="~/favicon.ico" />
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/VetLineApp.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+            <style>
+            /* Aktif navbar link stili */
+            .navbar-nav .nav-link.active {
+                color: #007bff !important;
+                background-color: rgba(0, 123, 255, 0.1);
+                border-radius: 8px;
+                position: relative;
+            }
+            
+            .navbar-nav .nav-link.active::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 60%;
+                height: 3px;
+                background: linear-gradient(90deg, #007bff, #0056b3);
+                border-radius: 2px;
+            }
+            
+            .navbar-nav .nav-link:hover {
+                color: #007bff !important;
+                background-color: rgba(0, 123, 255, 0.05);
+                border-radius: 8px;
+                transition: all 0.3s ease;
+            }
+            
+            .navbar-nav .nav-link {
+                transition: all 0.3s ease;
+                border-radius: 8px;
+                margin: 0 2px;
+            }
+
+            /* Modern Footer Stilleri */
+            .footer-modern {
+                margin-top: 0 !important;
+            }
+
+            .bg-darker {
+                background-color: #1a1a1a !important;
+            }
+
+            .footer-logo {
+                width: 50px;
+                height: 50px;
+                background: rgba(0, 123, 255, 0.1);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .social-links {
+                display: flex;
+                gap: 12px;
+                justify-content: flex-start;
+            }
+
+            .social-link {
+                width: 40px;
+                height: 40px;
+                background: rgba(0, 123, 255, 0.1);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: #007bff;
+                text-decoration: none;
+                transition: all 0.3s ease;
+            }
+
+            .social-link:hover {
+                background: rgba(0, 123, 255, 0.2);
+                color: #007bff;
+                transform: translateY(-2px);
+            }
+
+            .footer-links a {
+                transition: all 0.3s ease;
+                padding: 5px 0;
+                display: inline-block;
+            }
+
+            .footer-links a:hover {
+                color: #007bff !important;
+                transform: translateX(5px);
+            }
+
+            .contact-info i {
+                width: 20px;
+                text-align: center;
+            }
+
+            .border-secondary {
+                border-color: #495057 !important;
+            }
+
+            /* Responsive düzenlemeler */
+            @@media (max-width: 768px) {
+                .social-links {
+                    justify-content: center;
+                    margin-top: 20px;
+                }
+            }
+        </style>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm border-bottom">
+            <div class="container">
+                <!-- Logo - Sol taraf -->
+                @if (Context.Session.GetString("IsAdmin") == "True")
+                {
+                    <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Admin" asp-action="Index">
+                        <img src="~/image/logo.png" alt="VetLine Logo" height="60">
+                    </a>
+                }
+                else
+                {
+                    <a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img src="~/image/logo.png" alt="VetLine Logo" height="60">
+                    </a>
+                }
+
+                <!-- Mobile toggle button -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" 
+                        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                                        <div class="collapse navbar-collapse" id="navbarNav">
+                            <!-- Ana Navigation ve Kullanıcı Menüsü - Sağ taraf -->
+                            <ul class="navbar-nav ms-auto">
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semibold px-3 @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Index" ? "active" : "")" 
+                                       asp-area="" asp-controller="Home" asp-action="Index">
+                                        <i class="fas fa-home me-1"></i> Ana Sayfa
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semibold px-3 @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Services" ? "active" : "")" 
+                                       asp-area="" asp-controller="Services" asp-action="Index">
+                                        <i class="fas fa-stethoscope me-1"></i> Hizmetlerimiz
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semibold px-3 @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Products" ? "active" : "")" 
+                                       asp-area="" asp-controller="Products" asp-action="Index">
+                                        <i class="fas fa-shopping-bag me-1"></i> Ürünler
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semibold px-3 @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Inform" ? "active" : "")" 
+                                       asp-area="" asp-controller="Home" asp-action="Inform">
+                                        <i class="fas fa-info-circle me-1"></i> Bilgilendirme
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link fw-semibold px-3 @(ViewContext.RouteData.Values["Controller"]?.ToString() == "Home" && ViewContext.RouteData.Values["Action"]?.ToString() == "Contact" ? "active" : "")" 
+                                       asp-area="" asp-controller="Home" asp-action="Contact">
+                                        <i class="fas fa-envelope me-1"></i> İletişim
+                                    </a>
+                                </li>
+                        @if (!string.IsNullOrEmpty(Context.Session.GetString("UserId")))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="navbarDropdown" 
+                                   role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                    <div class="user-avatar me-2">
+                                        <i class="fas fa-user-circle fa-2x text-primary"></i>
+                                    </div>
+                                    <div class="user-info d-none d-lg-block">
+                                        <small class="text-muted d-block">
+                                            @if (Context.Session.GetString("IsAdmin") == "True")
+                                            {
+                                                <span class="badge bg-danger me-1">Admin</span>
+                                            }
+                                            Hoşgeldin
+                                        </small>
+                                        <span class="fw-semibold">@Context.Session.GetString("UserName")</span>
+                                    </div>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-end">
+                                    @if (Context.Session.GetString("IsAdmin") == "True")
+                                    {
+                                        <li><a class="dropdown-item text-danger" asp-controller="Admin" asp-action="Index">
+                                            <i class="fas fa-cogs me-2"></i> Admin Paneli</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                    }
+                                    <li><a class="dropdown-item" asp-controller="Animals" asp-action="Index">
+                                        <i class="fas fa-paw me-2"></i> Hayvanlarım</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Appointments" asp-action="Index">
+                                        <i class="fas fa-calendar-alt me-2"></i> Randevularım</a></li>
+                                    <li><a class="dropdown-item" asp-controller="Account" asp-action="Profile">
+                                        <i class="fas fa-user-cog me-2"></i> Profil Ayarları</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li>
+                                        <a href="/Account/Logout" class="dropdown-item text-danger">
+                                            <i class="fas fa-sign-out-alt me-2"></i> Çıkış Yap
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item me-2">
+                                <a class="btn btn-outline-primary" asp-controller="Account" asp-action="Login">
+                                    <i class="fas fa-sign-in-alt me-1"></i> Giriş Yap
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="btn btn-primary" asp-controller="Account" asp-action="Register">
+                                    <i class="fas fa-user-plus me-1"></i> Kayıt Ol
+                                </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="footer-modern">
+        <div class="footer-main bg-dark py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="d-flex align-items-center mb-3">
+                            <div class="footer-logo me-3">
+                                <i class="fas fa-heartbeat text-primary fs-2"></i>
+                            </div>
+                            <div>
+                                <h5 class="text-white fw-bold mb-1">VetLine Veteriner Kliniği</h5>
+                                <p class="text-muted mb-3">Evcil dostlarınız için profesyonel veteriner hizmetleri</p>
+                            </div>
+                        </div>
+                        <div class="contact-info">
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-phone text-primary me-3"></i>
+                                <span class="text-light">+90 (212) 123 45 67</span>
+                            </div>
+                            <div class="d-flex align-items-center mb-2">
+                                <i class="fas fa-envelope text-primary me-3"></i>
+                                <span class="text-light">info@vetline.com</span>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-map-marker-alt text-primary me-3"></i>
+                                <span class="text-light">İstanbul, Türkiye</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <h6 class="text-white fw-bold mb-4 border-bottom border-secondary pb-2">
+                            <i class="fas fa-link me-2 text-primary"></i>Hızlı Erişim
+                        </h6>
+                        <ul class="list-unstyled footer-links">
+                            <li class="mb-2"><a href="/" class="text-muted text-decoration-none hover-primary">Ana Sayfa</a></li>
+                            <li class="mb-2"><a href="/Services" class="text-muted text-decoration-none hover-primary">Hizmetlerimiz</a></li>
+                            <li class="mb-2"><a href="/Products" class="text-muted text-decoration-none hover-primary">Ürünlerimiz</a></li>
+                            <li class="mb-2"><a href="/Inform" class="text-muted text-decoration-none hover-primary">Bilgilendirme</a></li>
+                            <li class="mb-2"><a href="/Contact" class="text-muted text-decoration-none hover-primary">İletişim</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <h6 class="text-white fw-bold mb-4 border-bottom border-secondary pb-2">
+                            <i class="fas fa-clock me-2 text-primary"></i>Çalışma Saatleri
+                        </h6>
+                        <ul class="list-unstyled text-muted">
+                            <li class="mb-2">Pazartesi - Cuma: 09:00 - 18:00</li>
+                            <li class="mb-2">Cumartesi: 09:00 - 16:00</li>
+                            <li class="mb-2">Pazar: 10:00 - 15:00</li>
+                            <li class="mb-2"><strong class="text-primary">Acil Durumlar: 7/24</strong></li>
+                        </ul>
+                        <div class="mt-3">
+                            <div class="social-links">
+                                <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                                <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-bottom bg-darker py-3">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <p class="text-muted mb-0 small">&copy; 2025 VetLine Veteriner Kliniği. Tüm hakları saklıdır.</p>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <p class="text-muted mb-0 small">
+                            <i class="fas fa-heartbeat text-danger me-1"></i>
+                            Evcil dostlarınız için en iyisini yapıyoruz
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

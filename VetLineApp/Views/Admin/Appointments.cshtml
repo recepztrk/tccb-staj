@@ -1,0 +1,309 @@
+@model IEnumerable<VetLineApp.Models.Appointment>
+
+@{
+    ViewData["Title"] = "Randevu Yönetimi";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-calendar-alt me-2"></i>Randevu Yönetimi</h2>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Dashboard'a Dön
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Randevu İstatistikleri -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h4 class="mb-0">@Model.Count()</h4>
+                    <small>Toplam Randevu</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h4 class="mb-0">@Model.Where(a => a.AppointmentDateTime > DateTime.Now).Count()</h4>
+                    <small>Gelecek Randevu</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <h4 class="mb-0">@Model.Where(a => a.AppointmentDateTime.Date == DateTime.Today).Count()</h4>
+                    <small>Bugünkü Randevu</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body text-center">
+                    <h4 class="mb-0">@Model.Where(a => a.AppointmentDateTime < DateTime.Now).Count()</h4>
+                    <small>Geçmiş Randevu</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Randevu Listesi -->
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">
+                <i class="fas fa-list me-2"></i>Tüm Randevular
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Randevu Bilgileri</th>
+                            <th>Kullanıcı</th>
+                            <th>Hayvan</th>
+                            <th>Tarih & Saat</th>
+                            <th>Durum</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var appointment in Model.OrderBy(a => a.AppointmentDateTime))
+                        {
+                            var isPast = appointment.AppointmentDateTime < DateTime.Now;
+                            var isToday = appointment.AppointmentDateTime.Date == DateTime.Today;
+                            var isUpcoming = appointment.AppointmentDateTime > DateTime.Now;
+                            
+                            <tr class="@(isPast ? "table-secondary" : isToday ? "table-warning" : "")">
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" 
+                                             style="width: 40px; height: 40px;">
+                                            <i class="fas fa-calendar-check"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold">Randevu #@appointment.AppointmentId</div>
+                                            <small class="text-muted">
+                                                @if (isPast)
+                                                {
+                                                    <span class="text-muted">Tamamlandı</span>
+                                                }
+                                                else if (isToday)
+                                                {
+                                                    <span class="text-warning">Bugün</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-success">Gelecek</span>
+                                                }
+                                            </small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small">
+                                        <div class="fw-semibold">@appointment.User?.FirstName @appointment.User?.LastName</div>
+                                        <div class="text-muted">@appointment.User?.Email</div>
+                                        <div class="text-muted">@appointment.User?.Phone</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small">
+                                        @if (appointment.Animal != null)
+                                        {
+                                            <div class="fw-semibold">@appointment.Animal.Name</div>
+                                                                                    <div class="text-muted">@appointment.Animal.Type - @appointment.Animal.Breed</div>
+                                        <div class="text-muted">
+                                            @if (appointment.Animal.BirthDate.HasValue)
+                                            {
+                                                var age = DateTime.Now.Year - appointment.Animal.BirthDate.Value.Year;
+                                                <span>@age yaşında</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Yaş bilgisi yok</span>
+                                            }
+                                        </div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Hayvan bilgisi yok</span>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small">
+                                        <div class="fw-semibold">@appointment.AppointmentDateTime.ToString("dd.MM.yyyy")</div>
+                                        <div class="text-muted">@appointment.AppointmentDateTime.ToString("HH:mm")</div>
+                                        <div class="text-muted">
+                                            @if (isPast)
+                                            {
+                                                <span class="text-muted">@appointment.AppointmentDateTime.ToString("dd.MM.yyyy HH:mm")</span>
+                                            }
+                                            else if (isToday)
+                                            {
+                                                var timeUntil = appointment.AppointmentDateTime - DateTime.Now;
+                                                if (timeUntil.TotalHours > 0)
+                                                {
+                                                    <span class="text-warning">@Math.Round(timeUntil.TotalHours, 1) saat sonra</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-danger">@Math.Round(-timeUntil.TotalMinutes, 0) dakika önce</span>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                var timeUntil = appointment.AppointmentDateTime - DateTime.Now;
+                                                <span class="text-success">@Math.Round(timeUntil.TotalDays, 0) gün sonra</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small">
+                                        @if (isPast)
+                                        {
+                                            <span class="badge bg-secondary">Tamamlandı</span>
+                                        }
+                                        else if (isToday)
+                                        {
+                                            <span class="badge bg-warning">Bugün</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-success">Gelecek</span>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-outline-info" 
+                                                data-bs-toggle="modal" data-bs-target="#appointmentModal@(appointment.AppointmentId)">
+                                            <i class="fas fa-eye"></i> Detay
+                                        </button>
+                                        
+                                        @if (isUpcoming)
+                                        {
+                                            <button type="button" class="btn btn-sm btn-outline-warning" 
+                                                    onclick="markAsCompleted(@appointment.AppointmentId)">
+                                                <i class="fas fa-check"></i> Tamamla
+                                            </button>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Randevu Detay Modalları -->
+@foreach (var appointment in Model)
+{
+    <div class="modal fade" id="appointmentModal@(appointment.AppointmentId)" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Randevu Detayı #@appointment.AppointmentId</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary">Kullanıcı Bilgileri</h6>
+                            <p><strong>Ad Soyad:</strong> @appointment.User?.FirstName @appointment.User?.LastName</p>
+                            <p><strong>Email:</strong> @appointment.User?.Email</p>
+                            <p><strong>Telefon:</strong> @appointment.User?.Phone</p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-primary">Hayvan Bilgileri</h6>
+                            @if (appointment.Animal != null)
+                            {
+                                <p><strong>Ad:</strong> @appointment.Animal.Name</p>
+                                <p><strong>Tür:</strong> @appointment.Animal.Type</p>
+                                <p><strong>Cins:</strong> @appointment.Animal.Breed</p>
+                                <p><strong>Yaş:</strong> 
+                                    @if (appointment.Animal.BirthDate.HasValue)
+                                    {
+                                        var age = DateTime.Now.Year - appointment.Animal.BirthDate.Value.Year;
+                                        <span>@age yaşında</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Yaş bilgisi yok</span>
+                                    }
+                                </p>
+                            }
+                            else
+                            {
+                                <p class="text-muted">Hayvan bilgisi bulunamadı</p>
+                            }
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary">Randevu Bilgileri</h6>
+                            <p><strong>Tarih:</strong> @appointment.AppointmentDateTime.ToString("dd.MM.yyyy")</p>
+                            <p><strong>Saat:</strong> @appointment.AppointmentDateTime.ToString("HH:mm")</p>
+                            <p><strong>Durum:</strong> 
+                                @if (appointment.AppointmentDateTime < DateTime.Now)
+                                {
+                                    <span class="badge bg-secondary">Tamamlandı</span>
+                                }
+                                else if (appointment.AppointmentDateTime.Date == DateTime.Today)
+                                {
+                                    <span class="badge bg-warning">Bugün</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-success">Gelecek</span>
+                                }
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-primary">Notlar</h6>
+                            <p class="text-muted">Randevu notları burada görüntülenecek...</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+function markAsCompleted(appointmentId) {
+    if (confirm('Bu randevuyu tamamlandı olarak işaretlemek istediğinizden emin misiniz?')) {
+        // Burada AJAX ile randevu durumunu güncelleyebilirsiniz
+        alert('Randevu tamamlandı olarak işaretlendi!');
+    }
+}
+</script>
+
+<style>
+.avatar {
+    font-size: 1rem;
+}
+</style>

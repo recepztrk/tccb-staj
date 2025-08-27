@@ -1,0 +1,61 @@
+@{
+    ViewData["Title"] = "Email Doğrulama Başarısız";
+    Layout = "_LoginLayout";
+}
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow border-danger">
+                <div class="card-body text-center p-5">
+                    <div class="mb-4">
+                        <i class="fas fa-times-circle fa-4x text-danger"></i>
+                    </div>
+                    
+                    <h2 class="h3 mb-3 text-danger">Doğrulama Başarısız</h2>
+                    
+                    @if (TempData["Error"] != null)
+                    {
+                        <div class="alert alert-danger">
+                            <i class="fas fa-exclamation-triangle"></i> @TempData["Error"]
+                        </div>
+                    }
+                    
+                    <p class="text-muted mb-4">
+                        Doğrulama linki geçersiz veya süresi dolmuş olabilir.
+                    </p>
+
+                    <div class="bg-light p-3 rounded mb-4">
+                        <h6 class="mb-2">🔄 Ne yapabilirsiniz?</h6>
+                        <small class="text-muted">
+                            • Yeni bir doğrulama emaili isteyin<br>
+                            • Tekrar kayıt olmayı deneyin<br>
+                            • Giriş yapmayı deneyin
+                        </small>
+                    </div>
+
+                    <div class="d-grid gap-2">
+                        <a asp-action="Register" class="btn btn-primary">
+                            <i class="fas fa-user-plus"></i> Tekrar Kayıt Ol
+                        </a>
+                        
+                        <a asp-action="Login" class="btn btn-outline-primary">
+                            <i class="fas fa-sign-in-alt"></i> Giriş Yapmayı Dene
+                        </a>
+                        
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-home"></i> Anasayfaya Git
+                        </a>
+                    </div>
+
+                    <hr class="my-4">
+                    
+                    <div class="text-muted small">
+                        <i class="fas fa-question-circle"></i> 
+                        Sorun devam ederse, lütfen tekrar kayıt olmayı deneyin.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

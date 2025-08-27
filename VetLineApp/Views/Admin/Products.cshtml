@@ -1,0 +1,860 @@
+@model IEnumerable<VetLineApp.Models.Product>
+
+@{
+    ViewData["Title"] = "Ürün Yönetimi";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-box me-2"></i>Ürün Yönetimi</h2>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Dashboard'a Dön
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <!-- Sol Panel - Filtreler ve Ürün Ekleme -->
+        <div class="col-lg-3">
+            <div class="card shadow mb-4">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Filtreler</h6>
+                    <button type="button" class="btn btn-sm btn-outline-primary" onclick="openFilterEditor()">
+                        <i class="fas fa-cog"></i> Düzenle
+                    </button>
+                </div>
+                <div class="card-body">
+                    <form method="get" asp-action="Products" id="filterForm">
+                        <div class="mb-3">
+                            <label class="form-label">Hayvan Türü</label>
+                            <select name="animalType" class="form-select" id="animalTypeFilter">
+                                <option value="">Tüm Türler</option>
+                                <option value="Kedi">Kedi</option>
+                                <option value="Köpek">Köpek</option>
+                                <option value="Kuş">Kuş</option>
+                                <option value="Hamster">Hamster</option>
+                                <option value="Tavşan">Tavşan</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Kategoriler</label>
+                            <select name="category" class="form-select" id="categoryFilter">
+                                <option value="">Tüm Kategoriler</option>
+                                <option value="Mama">Mama</option>
+                                <option value="Vitamin">Vitamin</option>
+                                <option value="Aksesuar">Aksesuar</option>
+                                <option value="Oyuncak">Oyuncak</option>
+                                <option value="Bakım">Bakım</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Marka</label>
+                            <select name="brand" class="form-select" id="brandFilter">
+                                <option value="">Tüm Markalar</option>
+                                <option value="Royal Canin">Royal Canin</option>
+                                <option value="Pedigree">Pedigree</option>
+                                <option value="Whiskas">Whiskas</option>
+                                <option value="Pro Plan">Pro Plan</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Stok Durumu</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" name="inStock" id="inStockFilter">
+                                <label class="form-check-label" for="inStockFilter">
+                                    Stokta var
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Filtreleri Uygula</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="clearFilters()">Filtreleri Temizle</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Ürün Ekleme Paneli -->
+            <div class="card shadow">
+                <div class="card-header">
+                    <h6 class="m-0 font-weight-bold text-success">Yeni Ürün Ekle</h6>
+                </div>
+                <div class="card-body">
+                    <form asp-controller="Admin" asp-action="CreateProduct" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label class="form-label">Ürün Adı</label>
+                            <input type="text" name="Name" class="form-control" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Açıklama</label>
+                            <textarea name="Description" class="form-control" rows="3"></textarea>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Kategori</label>
+                            <div class="input-group">
+                                <select name="Category" class="form-select" id="newProductCategory" required>
+                                <option value="">Seçiniz</option>
+                                <option value="Mama">Mama</option>
+                                <option value="Vitamin">Vitamin</option>
+                                <option value="Aksesuar">Aksesuar</option>
+                                <option value="Oyuncak">Oyuncak</option>
+                                <option value="Bakım">Bakım</option>
+                            </select>
+                                <button type="button" class="btn btn-outline-primary" onclick="addNewCategory()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Hayvan Türü</label>
+                            <div class="input-group">
+                                <select name="AnimalType" class="form-select" id="newProductAnimalType" required>
+                                <option value="">Seçiniz</option>
+                                <option value="Kedi">Kedi</option>
+                                <option value="Köpek">Köpek</option>
+                                <option value="Kuş">Kuş</option>
+                                <option value="Hamster">Hamster</option>
+                                <option value="Tavşan">Tavşan</option>
+                            </select>
+                                <button type="button" class="btn btn-outline-primary" onclick="addNewAnimalType()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Marka</label>
+                            <div class="input-group">
+                                <select name="Brand" class="form-select" id="newProductBrand">
+                                    <option value="">Seçiniz</option>
+                                    <option value="Royal Canin">Royal Canin</option>
+                                    <option value="Pedigree">Pedigree</option>
+                                    <option value="Whiskas">Whiskas</option>
+                                    <option value="Pro Plan">Pro Plan</option>
+                                </select>
+                                <button type="button" class="btn btn-outline-primary" onclick="addNewBrand()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Stok</label>
+                            <input type="number" name="Stock" class="form-control" min="0" value="0">
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Ürün Resmi</label>
+                            <div class="border rounded p-3 text-center bg-light">
+                                <i class="fas fa-image fa-2x text-muted mb-2"></i>
+                                <input type="file" name="ImageFile" class="form-control" accept="image/*">
+                                <small class="text-muted">JPG, PNG formatında resim yükleyebilirsiniz</small>
+                            </div>
+                        </div>
+                        
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-success">
+                                <i class="fas fa-plus me-1"></i> Ürün Ekle
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sağ Panel - Ürün Listesi -->
+        <div class="col-lg-9">
+            <div class="card shadow">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h6 class="m-0 font-weight-bold text-primary">Ürün Listesi (<span id="productCount">@Model.Count()</span> ürün)</h6>
+                    <div class="input-group" style="width: 300px;">
+                        <input type="text" class="form-control" placeholder="Ürün ara..." id="searchInput">
+                        <button class="btn btn-outline-secondary" type="button">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="card-body">
+                    @if (Model.Any())
+                    {
+                        <div class="row" id="productList">
+                            @foreach (var product in Model)
+                            {
+                                <div class="col-lg-4 col-md-6 mb-4 product-item" 
+                                     data-product-id="@product.ProductId"
+                                     data-animal-type="@product.AnimalType" 
+                                     data-category="@product.Category" 
+                                     data-brand="@product.Brand" 
+                                     data-stock="@product.Stock">
+                                    <div class="card h-100 border">
+                                        @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                        {
+                                            <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;">
+                                        }
+                                        else
+                                        {
+                                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                                <i class="fas fa-image fa-3x text-muted"></i>
+                                            </div>
+                                        }
+                                        
+                                        <div class="card-body">
+                                            <h6 class="card-title">@product.Name</h6>
+                                            <p class="card-text small text-muted">@product.Description</p>
+                                            
+                                            <div class="mb-2">
+                                                <span class="badge bg-secondary me-1">@product.Category</span>
+                                                <span class="badge bg-info">@product.AnimalType</span>
+                                            </div>
+                                            
+                                            @if (!string.IsNullOrEmpty(product.Brand))
+                                            {
+                                                <small class="text-muted d-block">Marka: @product.Brand</small>
+                                            }
+                                            
+                                            <div class="mt-2">
+                                                @if (product.Stock > 10)
+                                                {
+                                                    <span class="badge bg-success">Stok: @product.Stock</span>
+                                                }
+                                                else if (product.Stock > 0)
+                                                {
+                                                    <span class="badge bg-warning">Stok: @product.Stock (Az)</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-danger">Stokta Yok</span>
+                                                }
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="card-footer bg-transparent">
+                                            <div class="btn-group w-100" role="group">
+                                                <button type="button" class="btn btn-outline-primary btn-sm" 
+                                                        onclick="editProduct(@product.ProductId)">
+                                                    <i class="fas fa-edit"></i> Düzenle
+                                                </button>
+                                                <button type="button" class="btn btn-outline-info btn-sm" 
+                                                        onclick="showProductDetails(@product.ProductId, '@product.Name', '@product.Description', '@product.Category', '@product.AnimalType', '@product.Brand', @product.Stock)">
+                                                    <i class="fas fa-eye"></i> Detay
+                                                </button>
+                                                <button type="button" class="btn btn-outline-danger btn-sm"
+                                                        onclick="deleteProduct(@product.ProductId, '@product.Name')">
+                                                    <i class="fas fa-trash"></i> Sil
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center py-5">
+                            <i class="fas fa-box-open fa-3x text-muted mb-3"></i>
+                            <h5 class="text-muted">Ürün bulunamadı</h5>
+                            <p class="text-muted">Filtreleri değiştirerek tekrar deneyin veya yeni ürün ekleyin.</p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Filtre Düzenleme Modal -->
+<div class="modal fade" id="filterEditorModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Filtre Düzenleme</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6 class="text-primary">Hayvan Türleri</h6>
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="newAnimalType" placeholder="Yeni tür ekle">
+                                <button type="button" class="btn btn-success" onclick="addAnimalType()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="animalTypesList">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Kedi</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeAnimalType('Kedi')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Köpek</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeAnimalType('Köpek')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Kuş</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeAnimalType('Kuş')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Hamster</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeAnimalType('Hamster')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Tavşan</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeAnimalType('Tavşan')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <h6 class="text-primary">Kategoriler</h6>
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="newCategory" placeholder="Yeni kategori ekle">
+                                <button type="button" class="btn btn-success" onclick="addCategory()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="categoriesList">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Mama</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeCategory('Mama')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Vitamin</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeCategory('Vitamin')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Aksesuar</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeCategory('Aksesuar')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Oyuncak</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeCategory('Oyuncak')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Bakım</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeCategory('Bakım')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <h6 class="text-primary">Markalar</h6>
+                        <div class="mb-3">
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="newBrand" placeholder="Yeni marka ekle">
+                                <button type="button" class="btn btn-success" onclick="addBrand()">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div id="brandsList">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Royal Canin</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeBrand('Royal Canin')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Pedigree</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeBrand('Pedigree')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Whiskas</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeBrand('Whiskas')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span>Pro Plan</span>
+                                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeBrand('Pro Plan')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                <button type="button" class="btn btn-primary" onclick="saveFilters()">Kaydet</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ürün Detay Modal -->
+<div class="modal fade" id="productDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ürün Detayı</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Ürün Adı</label>
+                            <p id="detailName" class="form-control-plaintext"></p>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Açıklama</label>
+                            <p id="detailDescription" class="form-control-plaintext"></p>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Kategori</label>
+                            <span id="detailCategory" class="badge bg-secondary"></span>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Hayvan Türü</label>
+                            <span id="detailAnimalType" class="badge bg-info"></span>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Marka</label>
+                            <p id="detailBrand" class="form-control-plaintext"></p>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Stok Durumu</label>
+                            <span id="detailStock" class="badge bg-success"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Ürün Düzenleme Modal -->
+<div class="modal fade" id="editProductModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Ürün Düzenle</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form id="editProductForm" method="post" asp-action="UpdateProduct">
+                <div class="modal-body">
+                    <input type="hidden" id="editProductId" name="productId">
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Ürün Adı</label>
+                                <input type="text" id="editName" name="name" class="form-control" required>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Açıklama</label>
+                                <textarea id="editDescription" name="description" class="form-control" rows="3"></textarea>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Kategori</label>
+                                <select id="editCategory" name="category" class="form-select" required>
+                                    <option value="Mama">Mama</option>
+                                    <option value="Vitamin">Vitamin</option>
+                                    <option value="Aksesuar">Aksesuar</option>
+                                    <option value="Oyuncak">Oyuncak</option>
+                                    <option value="Bakım">Bakım</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Hayvan Türü</label>
+                                <select id="editAnimalType" name="animalType" class="form-select" required>
+                                    <option value="Kedi">Kedi</option>
+                                    <option value="Köpek">Köpek</option>
+                                    <option value="Kuş">Kuş</option>
+                                    <option value="Hamster">Hamster</option>
+                                    <option value="Tavşan">Tavşan</option>
+                                </select>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label class="form-label">Marka</label>
+                                <input type="text" id="editBrand" name="brand" class="form-control">
+                            </div>
+                            
+                    <div class="mb-3">
+                                <label class="form-label">Stok</label>
+                                <input type="number" id="editStock" name="stock" class="form-control" min="0" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">İptal</button>
+                    <button type="submit" class="btn btn-primary">Güncelle</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Filtreleri uygula
+document.getElementById('filterForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    applyFilters();
+});
+
+// Filtreleri temizle
+function clearFilters() {
+    document.getElementById('animalTypeFilter').value = '';
+    document.getElementById('categoryFilter').value = '';
+    document.getElementById('brandFilter').value = '';
+    document.getElementById('inStockFilter').checked = false;
+    applyFilters();
+}
+
+// Filtreleri uygula
+function applyFilters() {
+    const animalType = document.getElementById('animalTypeFilter').value;
+    const category = document.getElementById('categoryFilter').value;
+    const brand = document.getElementById('brandFilter').value;
+    const inStock = document.getElementById('inStockFilter').checked;
+    
+    const products = document.querySelectorAll('.product-item');
+    let visibleCount = 0;
+    
+    products.forEach(product => {
+        const productAnimalType = product.dataset.animalType;
+        const productCategory = product.dataset.category;
+        const productBrand = product.dataset.brand;
+        const productStock = parseInt(product.dataset.stock);
+        
+        let shouldShow = true;
+        
+        if (animalType && productAnimalType !== animalType) shouldShow = false;
+        if (category && productCategory !== category) shouldShow = false;
+        if (brand && productBrand !== brand) shouldShow = false;
+        if (inStock && productStock <= 0) shouldShow = false;
+        
+        if (shouldShow) {
+            product.style.display = 'block';
+            visibleCount++;
+        } else {
+            product.style.display = 'none';
+        }
+    });
+    
+    document.getElementById('productCount').textContent = visibleCount;
+}
+
+// Arama fonksiyonu
+document.getElementById('searchInput').addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const products = document.querySelectorAll('.product-item');
+    let visibleCount = 0;
+    
+    products.forEach(product => {
+        const title = product.querySelector('.card-title').textContent.toLowerCase();
+        const description = product.querySelector('.card-text').textContent.toLowerCase();
+        
+        if (title.includes(searchTerm) || description.includes(searchTerm)) {
+            product.style.display = 'block';
+            visibleCount++;
+        } else {
+            product.style.display = 'none';
+        }
+    });
+    
+    document.getElementById('productCount').textContent = visibleCount;
+});
+
+// Filtre düzenleme modal'ını aç
+function openFilterEditor() {
+    new bootstrap.Modal(document.getElementById('filterEditorModal')).show();
+}
+
+// Yeni hayvan türü ekle
+function addAnimalType() {
+    const input = document.getElementById('newAnimalType');
+    const value = input.value.trim();
+    if (value) {
+        addToList('animalTypesList', value, 'removeAnimalType');
+        addToSelect('animalTypeFilter', value);
+        addToSelect('newProductAnimalType', value);
+        addToSelect('editAnimalType', value);
+        input.value = '';
+    }
+}
+
+// Yeni kategori ekle
+function addCategory() {
+    const input = document.getElementById('newCategory');
+    const value = input.value.trim();
+    if (value) {
+        addToList('categoriesList', value, 'removeCategory');
+        addToSelect('categoryFilter', value);
+        addToSelect('newProductCategory', value);
+        addToSelect('editCategory', value);
+        input.value = '';
+    }
+}
+
+// Yeni marka ekle
+function addBrand() {
+    const input = document.getElementById('newBrand');
+    const value = input.value.trim();
+    if (value) {
+        addToList('brandsList', value, 'removeBrand');
+        addToSelect('brandFilter', value);
+        addToSelect('newProductBrand', value);
+        addToSelect('editBrand', value);
+        input.value = '';
+    }
+}
+
+// Listeye yeni öğe ekle
+function addToList(listId, value, removeFunction) {
+    const list = document.getElementById(listId);
+    const newItem = document.createElement('div');
+    newItem.className = 'd-flex justify-content-between align-items-center mb-2';
+    newItem.innerHTML = `
+        <span>${value}</span>
+        <button type="button" class="btn btn-sm btn-outline-danger" onclick="${removeFunction}('${value}')">
+            <i class="fas fa-trash"></i>
+        </button>
+    `;
+    list.appendChild(newItem);
+}
+
+// Select'e yeni option ekle
+function addToSelect(selectId, value) {
+    const select = document.getElementById(selectId);
+    if (select) {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = value;
+        select.appendChild(option);
+    }
+}
+
+// Hayvan türü kaldır
+function removeAnimalType(value) {
+    removeFromList('animalTypesList', value);
+    removeFromSelect('animalTypeFilter', value);
+    removeFromSelect('newProductAnimalType', value);
+    removeFromSelect('editAnimalType', value);
+}
+
+// Kategori kaldır
+function removeCategory(value) {
+    removeFromList('categoriesList', value);
+    removeFromSelect('categoryFilter', value);
+    removeFromSelect('newProductCategory', value);
+    removeFromSelect('editCategory', value);
+}
+
+// Marka kaldır
+function removeBrand(value) {
+    removeFromList('brandsList', value);
+    removeFromSelect('brandFilter', value);
+    removeFromSelect('newProductBrand', value);
+    removeFromSelect('editBrand', value);
+}
+
+// Listeden öğe kaldır
+function removeFromList(listId, value) {
+    const list = document.getElementById(listId);
+    const items = list.querySelectorAll('.d-flex');
+    items.forEach(item => {
+        if (item.querySelector('span').textContent === value) {
+            item.remove();
+        }
+    });
+}
+
+// Select'ten option kaldır
+function removeFromSelect(selectId, value) {
+    const select = document.getElementById(selectId);
+    if (select) {
+        const options = select.querySelectorAll('option');
+        options.forEach(option => {
+            if (option.value === value) {
+                option.remove();
+            }
+        });
+    }
+}
+
+// Filtreleri kaydet
+function saveFilters() {
+    // Burada filtreleri veritabanına kaydedebilirsiniz
+    alert('Filtreler kaydedildi!');
+    bootstrap.Modal.getInstance(document.getElementById('filterEditorModal')).hide();
+}
+
+// Yeni ürün ekleme formunda yeni kategori ekle
+function addNewCategory() {
+    const input = prompt('Yeni kategori adı:');
+    if (input && input.trim()) {
+        const value = input.trim();
+        addToList('categoriesList', value, 'removeCategory');
+        addToSelect('categoryFilter', value);
+        addToSelect('newProductCategory', value);
+        addToSelect('editCategory', value);
+        document.getElementById('newProductCategory').value = value;
+    }
+}
+
+// Yeni ürün ekleme formunda yeni hayvan türü ekle
+function addNewAnimalType() {
+    const input = prompt('Yeni hayvan türü:');
+    if (input && input.trim()) {
+        const value = input.trim();
+        addToList('animalTypesList', value, 'removeAnimalType');
+        addToSelect('animalTypeFilter', value);
+        addToSelect('newProductAnimalType', value);
+        addToSelect('editAnimalType', value);
+        document.getElementById('newProductAnimalType').value = value;
+    }
+}
+
+// Yeni ürün ekleme formunda yeni marka ekle
+function addNewBrand() {
+    const input = prompt('Yeni marka:');
+    if (input && input.trim()) {
+        const value = input.trim();
+        addToList('brandsList', value, 'removeBrand');
+        addToSelect('brandFilter', value);
+        addToSelect('newProductBrand', value);
+        addToSelect('editBrand', value);
+        document.getElementById('newProductBrand').value = value;
+    }
+}
+
+// Ürün detaylarını göster
+function showProductDetails(productId, name, description, category, animalType, brand, stock) {
+    // Modal'ı doldur
+    document.getElementById('detailName').textContent = name;
+    document.getElementById('detailDescription').textContent = description;
+    document.getElementById('detailCategory').textContent = category;
+    document.getElementById('detailAnimalType').textContent = animalType;
+    document.getElementById('detailBrand').textContent = brand;
+    document.getElementById('detailStock').textContent = `${stock} adet mevcut`;
+    
+    // Modal'ı göster
+    new bootstrap.Modal(document.getElementById('productDetailsModal')).show();
+}
+
+// Ürün düzenleme
+function editProduct(productId) {
+    // Ürün bilgilerini bul
+    const productRow = document.querySelector(`[data-product-id="${productId}"]`);
+    if (productRow) {
+        const name = productRow.querySelector('.card-title').textContent;
+        const description = productRow.querySelector('.card-text').textContent;
+        const category = productRow.querySelector('.badge.bg-secondary').textContent;
+        const animalType = productRow.querySelector('.badge.bg-info').textContent;
+        const brand = productRow.querySelector('small.text-muted')?.textContent.replace('Marka: ', '') || '';
+        const stock = productRow.dataset.stock;
+        
+        // Modal'ı doldur
+        document.getElementById('editProductId').value = productId;
+        document.getElementById('editName').value = name;
+        document.getElementById('editDescription').value = description;
+        document.getElementById('editCategory').value = category;
+        document.getElementById('editAnimalType').value = animalType;
+        document.getElementById('editBrand').value = brand;
+        document.getElementById('editStock').value = stock;
+        
+        new bootstrap.Modal(document.getElementById('editProductModal')).show();
+    }
+}
+
+// Ürün silme
+function deleteProduct(productId, productName) {
+    if (confirm(`"${productName}" ürününü silmek istediğinizden emin misiniz?`)) {
+        // Form oluştur ve gönder
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '@Url.Action("DeleteProduct", "Admin")';
+        
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'productId';
+        input.value = productId;
+        
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+    }
+}
+
+// Sayfa yüklendiğinde mevcut filtreleri uygula
+document.addEventListener('DOMContentLoaded', function() {
+    // URL'den filtreleri al ve uygula
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has('animalType')) {
+        document.getElementById('animalTypeFilter').value = urlParams.get('animalType');
+    }
+    if (urlParams.has('category')) {
+        document.getElementById('categoryFilter').value = urlParams.get('category');
+    }
+    if (urlParams.has('brand')) {
+        document.getElementById('brandFilter').value = urlParams.get('brand');
+    }
+    if (urlParams.has('inStock')) {
+        document.getElementById('inStockFilter').checked = true;
+    }
+});
+</script>

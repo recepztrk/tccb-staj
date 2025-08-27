@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - VetLine Veteriner Kliniği</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/VetLineApp.styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body class="login-page">
+    <div class="container-fluid vh-100">
+        <div class="row h-100">
+            <!-- Left side - Branding -->
+            <div class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center bg-primary text-white">
+                <div class="text-center">
+                    <img src="~/image/logo.png" alt="VetLine Logo" class="mb-4" style="max-height: 120px;">
+                    <h2 class="mb-3">VetLine Veteriner Kliniği</h2>
+                    <p class="lead">Evcil dostlarınızın sağlığı bizim önceliğimiz</p>
+                    <div class="mt-4">
+                        <i class="fas fa-paw fa-2x mb-3"></i>
+                        <p>Profesyonel veteriner hizmetleri ile hayvanlarınızın mutluluğunu ve sağlığını koruyoruz.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right side - Login form -->
+            <div class="col-lg-6 d-flex align-items-center justify-content-center">
+                <div class="w-100" style="max-width: 400px;">
+                    <!-- Mobile logo -->
+                    <div class="text-center d-lg-none mb-4">
+                        <img src="~/image/logo.png" alt="VetLine Logo" height="60">
+                        <h4 class="mt-2">VetLine</h4>
+                    </div>
+                    
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
+
+<style>
+.login-page {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+}
+
+.bg-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%) !important;
+}
+
+/* Email sent page specific styles */
+.email-sent-card {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    border: none;
+}
+
+.email-sent-card .card-body {
+    padding: 3rem 2rem;
+}
+
+.email-sent-icon {
+    color: #007bff;
+    margin-bottom: 1.5rem;
+}
+
+.email-sent-title {
+    color: #007bff;
+    font-weight: 600;
+    margin-bottom: 1.5rem;
+}
+
+.email-sent-alert {
+    border: none;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+    color: #155724;
+}
+
+.email-sent-info-box {
+    background: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.email-sent-btn {
+    border-radius: 25px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.email-sent-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+@@media (max-width: 991.98px) {
+    .login-page {
+        background: white;
+    }
+    
+    .email-sent-card .card-body {
+        padding: 2rem 1.5rem;
+    }
+}
+</style>

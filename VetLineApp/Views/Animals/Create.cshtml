@@ -1,0 +1,103 @@
+@model VetLineApp.ViewModels.CreateAnimalViewModel
+
+@{
+    ViewData["Title"] = "Yeni Hayvan Ekle";
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-plus-circle me-2"></i>
+                        Yeni Hayvan Ekle
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none"></div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Name" class="form-label fw-semibold">
+                                    <i class="fas fa-paw me-1 text-primary"></i>
+                                    @Html.DisplayNameFor(model => model.Name)
+                                </label>
+                                <input asp-for="Name" class="form-control" placeholder="Örn: Minnoş" />
+                                <span asp-validation-for="Name" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Type" class="form-label fw-semibold">
+                                    <i class="fas fa-dog me-1 text-primary"></i>
+                                    @Html.DisplayNameFor(model => model.Type)
+                                </label>
+                                <select asp-for="Type" class="form-select">
+                                    <option value="">Hayvan türü seçiniz</option>
+                                    <option value="Kedi">Kedi</option>
+                                    <option value="Köpek">Köpek</option>
+                                    <option value="Kuş">Kuş</option>
+                                    <option value="Hamster">Hamster</option>
+                                    <option value="Tavşan">Tavşan</option>
+                                    <option value="Diğer">Diğer</option>
+                                </select>
+                                <span asp-validation-for="Type" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Breed" class="form-label fw-semibold">
+                                    <i class="fas fa-certificate me-1 text-primary"></i>
+                                    @Html.DisplayNameFor(model => model.Breed)
+                                </label>
+                                <input asp-for="Breed" class="form-control" placeholder="Örn: British Shorthair" />
+                                <span asp-validation-for="Breed" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="Gender" class="form-label fw-semibold">
+                                    <i class="fas fa-venus-mars me-1 text-primary"></i>
+                                    @Html.DisplayNameFor(model => model.Gender)
+                                </label>
+                                <select asp-for="Gender" class="form-select">
+                                    <option value="">Cinsiyet seçiniz</option>
+                                    <option value="Erkek">Erkek</option>
+                                    <option value="Dişi">Dişi</option>
+                                </select>
+                                <span asp-validation-for="Gender" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label asp-for="BirthDate" class="form-label fw-semibold">
+                                    <i class="fas fa-birthday-cake me-1 text-primary"></i>
+                                    @Html.DisplayNameFor(model => model.BirthDate)
+                                </label>
+                                <input asp-for="BirthDate" class="form-control" type="date" />
+                                <span asp-validation-for="BirthDate" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a asp-action="Index" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>
+                                Geri Dön
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fas fa-save me-1"></i>
+                                Hayvanı Kaydet
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

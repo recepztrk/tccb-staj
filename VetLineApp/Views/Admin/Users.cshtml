@@ -1,0 +1,159 @@
+@model IEnumerable<VetLineApp.Models.User>
+
+@{
+    ViewData["Title"] = "Kullanıcı Yönetimi";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-users me-2"></i>Kullanıcı Yönetimi</h2>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Dashboard'a Dön
+                </a>
+            </div>
+        </div>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            <i class="fas fa-check-circle me-2"></i>@TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible fade show">
+            <i class="fas fa-exclamation-triangle me-2"></i>@TempData["Error"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <!-- Kullanıcı Listesi -->
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">
+                <i class="fas fa-list me-2"></i>Üye Kullanıcılar (@Model.Count())
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Kullanıcı Bilgileri</th>
+                            <th>İletişim</th>
+                            <th>Hesap Durumu</th>
+                            <th>Hayvan Bilgileri</th>
+                            <th>Randevu Bilgileri</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" 
+                                             style="width: 50px; height: 50px;">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold">@user.FirstName @user.LastName</div>
+                                            <small class="text-muted">ID: @user.UserId</small>
+                                            @if (user.IsAdmin)
+                                            {
+                                                <div><span class="badge bg-danger">Admin</span></div>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small">
+                                        <div><i class="fas fa-envelope me-1"></i> @user.Email</div>
+                                        <div><i class="fas fa-phone me-1"></i> @user.Phone</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small">
+                                        @if (user.EmailVerified)
+                                        {
+                                            <span class="badge bg-success">Email Doğrulandı</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning">Email Doğrulanmadı</span>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small">
+                                        <div><i class="fas fa-paw me-1"></i> @user.Animals?.Count() hayvan</div>
+                                        @if (user.Animals?.Any() == true)
+                                        {
+                                            <div class="text-muted">
+                                                @string.Join(", ", user.Animals.Take(2).Select(a => a.Name))
+                                                @if (user.Animals.Count() > 2)
+                                                {
+                                                    <span>...</span>
+                                                }
+                                            </div>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small">
+                                        <div><i class="fas fa-calendar me-1"></i> @user.Appointments?.Count() randevu</div>
+                                        @if (user.Appointments?.Any() == true)
+                                        {
+                                            var upcomingAppointments = user.Appointments.Where(a => a.AppointmentDateTime > DateTime.Now).Count();
+                                            <div class="text-muted">
+                                                @upcomingAppointments gelecek randevu
+                                            </div>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        @if (user.UserId != int.Parse(Context.Session.GetString("UserId") ?? "0"))
+                                        {
+                                            @if (!user.IsAdmin)
+                                            {
+                                                <form asp-action="DeleteUser" method="post" class="d-inline">
+                                                    <input type="hidden" name="userId" value="@user.UserId" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" 
+                                                            onclick="return confirm('Bu kullanıcıyı silmek istediğinizden emin misiniz? Bu işlem geri alınamaz!')">
+                                                        <i class="fas fa-trash"></i> Sil
+                                                    </button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted small">Admin kullanıcı silinemez</span>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted small">Kendi hesabınız</span>
+                                        }
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.avatar {
+    font-size: 1.2rem;
+}
+</style>

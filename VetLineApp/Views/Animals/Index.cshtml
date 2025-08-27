@@ -1,0 +1,146 @@
+@model IEnumerable<VetLineApp.Models.Animal>
+
+@{
+    ViewData["Title"] = "Hayvanlarım";
+}
+
+<div class="container my-5">
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i>
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h2 class="display-4 text-primary">
+                <i class="fas fa-heart me-3"></i>
+                Hayvanlarım
+            </h2>
+            <p class="lead">Sevgili evcil dostlarınız</p>
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-12 text-end">
+            <a asp-action="Create" class="btn btn-success">
+                <i class="fas fa-plus"></i> Yeni Hayvan Ekle
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        @if (Model.Any())
+        {
+            @foreach (var animal in Model)
+            {
+                <div class="col-md-6 col-lg-4 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-start mb-3">
+                                <h5 class="card-title text-primary mb-0">
+                                    <i class="fas fa-paw"></i> @animal.Name
+                                </h5>
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                                        <i class="fas fa-ellipsis-v"></i>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-action="Details" asp-route-id="@animal.AnimalId">
+                                            <i class="fas fa-eye"></i> Detaylar</a></li>
+                                        <li><a class="dropdown-item" asp-action="Edit" asp-route-id="@animal.AnimalId">
+                                            <i class="fas fa-edit"></i> Düzenle</a></li>
+                                        <li><hr class="dropdown-divider"></li>
+                                        <li><a class="dropdown-item text-danger" asp-action="Delete" asp-route-id="@animal.AnimalId">
+                                            <i class="fas fa-trash"></i> Sil</a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            
+                            <div class="animal-info">
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <small class="text-muted">Tür:</small>
+                                        <div><strong>@animal.Type</strong></div>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted">Cinsi:</small>
+                                        <div>@(animal.Breed ?? "Belirtilmemiş")</div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-2">
+                                    <div class="col-6">
+                                        <small class="text-muted">Cinsiyet:</small>
+                                        <div>
+                                            @if (animal.Gender == "Erkek")
+                                            {
+                                                <i class="fas fa-mars text-primary"></i> @animal.Gender
+                                            }
+                                            else if (animal.Gender == "Dişi")
+                                            {
+                                                <i class="fas fa-venus text-danger"></i> @animal.Gender
+                                            }
+                                            else
+                                            {
+                                                <span>@(animal.Gender ?? "Belirtilmemiş")</span>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <small class="text-muted">Yaş:</small>
+                                        <div>
+                                            @if (animal.BirthDate.HasValue)
+                                            {
+                                                var age = DateTime.Now.Year - animal.BirthDate.Value.Year;
+                                                if (DateTime.Now < animal.BirthDate.Value.AddYears(age)) age--;
+                                                <span>@age yaşında</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Belirtilmemiş</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                            </div>
+                        </div>
+                        <div class="card-footer bg-light">
+                            <div class="d-flex justify-content-between">
+                                <small class="text-muted">
+                                    @if (animal.BirthDate.HasValue)
+                                    {
+                                        <span>Doğum: @animal.BirthDate.Value.ToString("dd.MM.yyyy")</span>
+                                    }
+                                </small>
+                                <a asp-action="Details" asp-route-id="@animal.AnimalId" class="btn btn-outline-primary btn-sm">
+                                    Detaylar
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12 text-center">
+                <div class="card border-0 bg-light">
+                    <div class="card-body py-5">
+                        <i class="fas fa-heart fa-3x text-muted mb-3"></i>
+                        <h4 class="text-muted mb-3">Henüz hayvan eklenmemiş</h4>
+                        <p class="text-muted mb-4">İlk evcil dostunuzu ekleyerek başlayın!</p>
+                        <a asp-action="Create" class="btn btn-primary btn-lg">
+                            <i class="fas fa-plus me-2"></i> İlk Hayvanımı Ekle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>

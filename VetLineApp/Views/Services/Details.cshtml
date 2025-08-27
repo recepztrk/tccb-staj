@@ -1,0 +1,45 @@
+@model VetLineApp.Models.Service
+
+@{
+    ViewData["Title"] = "Hizmet Detayı";
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-lg-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="card-title mb-0">@Model.Title</h3>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h5 class="text-muted">Kısa Açıklama</h5>
+                        <p class="lead">@Model.ShortDescription</p>
+                    </div>
+                    
+                    @if (!string.IsNullOrEmpty(Model.Details))
+                    {
+                        <div class="mb-4">
+                            <h5 class="text-muted">Detaylar</h5>
+                            <div class="details-content">
+                                @foreach (var detail in Model.Details.Split('\n'))
+                                {
+                                    <p>@detail</p>
+                                }
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="card-footer bg-light">
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Geri Dön
+                        </a>
+                        
+                        <!-- Hizmet yönetimi Admin panelde yapılıyor -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,108 @@
+@model VetLineApp.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Giriş Yap";
+    Layout = "~/Views/Shared/_LoginLayout.cshtml";
+}
+
+<div class="card border-0 shadow-lg">
+    <div class="card-header bg-success text-white text-center py-3">
+        <h3 class="mb-0">
+            <i class="fas fa-sign-in-alt"></i> Giriş Yap
+        </h3>
+    </div>
+    <div class="card-body p-4">
+        <!-- Email Doğrulama Uyarısı -->
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-warning">
+                <i class="fas fa-exclamation-triangle"></i> @TempData["Error"]
+                
+                @if (ViewBag.ShowResendLink == true && !string.IsNullOrEmpty(ViewBag.Email as string))
+                {
+                    <hr>
+                    <form asp-action="ResendVerificationEmail" method="post" class="d-inline">
+                        @Html.AntiForgeryToken()
+                        <input type="hidden" name="email" value="@ViewBag.Email" />
+                        <button type="submit" class="btn btn-sm btn-outline-primary">
+                            <i class="fas fa-envelope"></i> Doğrulama Email'i Tekrar Gönder
+                        </button>
+                    </form>
+                }
+            </div>
+        }
+
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success">
+                <i class="fas fa-check-circle"></i> @TempData["Success"]
+            </div>
+        }
+
+        @if (TempData["Info"] != null)
+        {
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> @TempData["Info"]
+            </div>
+        }
+
+        <form asp-action="Login" asp-route-returnurl="@ViewData["ReturnUrl"]" method="post">
+            @Html.AntiForgeryToken()
+            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+            <div class="mb-3">
+                <label asp-for="Email" class="form-label fw-semibold"></label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-envelope"></i>
+                    </span>
+                    <input asp-for="Email" class="form-control" placeholder="E-posta adresiniz" autofocus>
+                </div>
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="Password" class="form-label fw-semibold"></label>
+                <div class="input-group">
+                    <span class="input-group-text">
+                        <i class="fas fa-lock"></i>
+                    </span>
+                    <input asp-for="Password" class="form-control" placeholder="Şifreniz">
+                </div>
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <div class="form-check">
+                    <input asp-for="RememberMe" class="form-check-input">
+                    <label asp-for="RememberMe" class="form-check-label">
+                        Beni hatırla
+                    </label>
+                </div>
+            </div>
+
+            <div class="d-grid mb-3">
+                <button type="submit" class="btn btn-success btn-lg">
+                    <i class="fas fa-sign-in-alt"></i> Giriş Yap
+                </button>
+            </div>
+        </form>
+    </div>
+    <div class="card-footer text-center bg-light">
+        <p class="mb-0">
+            Hesabınız yok mu? 
+            <a asp-action="Register" asp-route-returnurl="@ViewData["ReturnUrl"]" class="text-decoration-none fw-semibold">
+                <i class="fas fa-user-plus"></i> Kayıt Ol
+            </a>
+        </p>
+        <div class="mt-2">
+            <a asp-controller="Home" asp-action="Index" class="text-muted text-decoration-none">
+                <i class="fas fa-arrow-left"></i> Ana Sayfaya Dön
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,121 @@
+@model IEnumerable<VetLineApp.Models.Product>
+
+@{
+    ViewData["Title"] = "Ürünlerimiz";
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h2 class="display-4 text-primary">Ürünlerimiz</h2>
+            <p class="lead">Evcil dostlarınız için kaliteli ürünler</p>
+        </div>
+    </div>
+
+    <!-- Filtreleme Alanı -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <form method="get" asp-action="Index">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <select name="category" class="form-select">
+                                    <option value="">Tüm Kategoriler</option>
+                                    @foreach (var category in ViewBag.Categories as List<string> ?? new List<string>())
+                                    {
+                                        <option value="@category" selected="@(Context.Request.Query["category"] == category)">@category</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select name="animalType" class="form-select">
+                                    <option value="">Tüm Hayvan Türleri</option>
+                                    @foreach (var animalType in ViewBag.AnimalTypes as List<string> ?? new List<string>())
+                                    {
+                                        <option value="@animalType" selected="@(Context.Request.Query["animalType"] == animalType)">@animalType</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <input type="text" name="searchTerm" class="form-control" placeholder="Ürün ara..." value="@Context.Request.Query["searchTerm"]">
+                            </div>
+                            <div class="col-md-2">
+                                <button type="submit" class="btn btn-primary w-100">Filtrele</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ürün Listesi -->
+    <div class="row">
+        @foreach (var product in Model)
+        {
+            <div class="col-md-4 col-lg-3 mb-4">
+                <div class="card h-100 shadow-sm">
+                    @if (!string.IsNullOrEmpty(product.ImageUrl))
+                    {
+                        <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name" style="height: 200px; object-fit: cover;">
+                    }
+                    else
+                    {
+                        <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                        </div>
+                    }
+                    <div class="card-body">
+                        <h6 class="card-title">@product.Name</h6>
+                        <p class="card-text small text-muted">@product.Description</p>
+                        <div class="mb-2">
+                            @if (!string.IsNullOrEmpty(product.Category))
+                            {
+                                <span class="badge bg-secondary me-1">@product.Category</span>
+                            }
+                            @if (!string.IsNullOrEmpty(product.AnimalType))
+                            {
+                                <span class="badge bg-info">@product.AnimalType</span>
+                            }
+                        </div>
+                        @if (!string.IsNullOrEmpty(product.Brand))
+                        {
+                            <small class="text-muted">Marka: @product.Brand</small>
+                        }
+                        <div class="mt-2">
+                            <small class="text-success">Stok: @product.Stock adet</small>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent">
+                        <a asp-action="Details" asp-route-id="@product.ProductId" class="btn btn-outline-primary btn-sm w-100">
+                            Detayları Görüntüle
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="alert alert-info">
+                    <i class="fas fa-info-circle"></i> Aradığınız kriterlerde ürün bulunamadı.
+                </div>
+            </div>
+        </div>
+    }
+
+    @if (User.IsInRole("Admin"))
+    {
+        <div class="row mt-4">
+            <div class="col-12 text-center">
+                <a asp-action="Create" class="btn btn-success">
+                    <i class="fas fa-plus"></i> Yeni Ürün Ekle
+                </a>
+            </div>
+        </div>
+    }
+</div>

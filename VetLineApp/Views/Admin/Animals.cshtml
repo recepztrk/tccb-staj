@@ -1,0 +1,246 @@
+@model IEnumerable<VetLineApp.Models.Animal>
+
+@{
+    ViewData["Title"] = "Hayvan Yönetimi";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-paw me-2"></i>Hayvan Yönetimi</h2>
+                <a asp-action="Index" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left me-2"></i>Dashboard'a Dön
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hayvan İstatistikleri -->
+    <div class="row mb-4">
+        <div class="col-md-3 mb-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <h4 class="mb-0">@Model.Count()</h4>
+                    <small>Toplam Hayvan</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-success text-white">
+                <div class="card-body text-center">
+                    <h4 class="mb-0">@Model.Where(a => a.Type == "Kedi").Count()</h4>
+                    <small>Kedi</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-info text-white">
+                <div class="card-body text-center">
+                    <h4 class="mb-0">@Model.Where(a => a.Type == "Köpek").Count()</h4>
+                    <small>Köpek</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mb-3">
+            <div class="card bg-warning text-white">
+                <div class="card-body text-center">
+                    <h4 class="mb-0">@Model.Where(a => a.Type != "Kedi" && a.Type != "Köpek").Count()</h4>
+                    <small>Diğer</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hayvan Listesi -->
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">
+                <i class="fas fa-list me-2"></i>Sisteme Kayıtlı Hayvanlar
+            </h6>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Hayvan Bilgileri</th>
+                            <th>Sahip Bilgileri</th>
+                            <th>Fiziksel Özellikler</th>
+                            <th>Randevu Bilgileri</th>
+                            <th>Kayıt Tarihi</th>
+                            <th>İşlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var animal in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" 
+                                             style="width: 50px; height: 50px;">
+                                            <i class="fas fa-paw"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-bold">@animal.Name</div>
+                                            <small class="text-muted">ID: @animal.AnimalId</small>
+                                            @if (animal.Gender == "Erkek")
+                                            {
+                                                <div><span class="badge bg-info">Erkek</span></div>
+                                            }
+                                            else if (animal.Gender == "Dişi")
+                                            {
+                                                <div><span class="badge bg-warning">Dişi</span></div>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small">
+                                        <div class="fw-semibold">@animal.User?.FirstName @animal.User?.LastName</div>
+                                        <div class="text-muted">@animal.User?.Email</div>
+                                        <div class="text-muted">@animal.User?.Phone</div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small">
+                                        <div><strong>Tür:</strong> @animal.Type</div>
+                                        <div><strong>Cins:</strong> @(animal.Breed ?? "Belirtilmemiş")</div>
+                                        <div><strong>Yaş:</strong> 
+                                            @if (animal.BirthDate.HasValue)
+                                            {
+                                                var age = DateTime.Now.Year - animal.BirthDate.Value.Year;
+                                                <span>@age yaşında</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-muted">Bilinmiyor</span>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small">
+                                        <div><i class="fas fa-calendar me-1"></i> @animal.Appointments?.Count() randevu</div>
+                                        @if (animal.Appointments?.Any() == true)
+                                        {
+                                            var upcomingAppointments = animal.Appointments.Where(a => a.AppointmentDateTime > DateTime.Now).Count();
+                                            <div class="text-muted">
+                                                @upcomingAppointments gelecek randevu
+                                            </div>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="small">
+                                        @if (animal.BirthDate.HasValue)
+                                        {
+                                            <div class="text-muted">@animal.BirthDate.Value.ToString("dd.MM.yyyy")</div>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Bilinmiyor</span>
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <button type="button" class="btn btn-sm btn-outline-info" 
+                                                data-bs-toggle="modal" data-bs-target="#animalModal@(animal.AnimalId)">
+                                            <i class="fas fa-eye"></i> Detay
+                                        </button>
+                                        
+                                        <button type="button" class="btn btn-sm btn-outline-warning" 
+                                                onclick="editAnimal(@animal.AnimalId)">
+                                            <i class="fas fa-edit"></i> Düzenle
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hayvan Detay Modalları -->
+@foreach (var animal in Model)
+{
+    <div class="modal fade" id="animalModal@(animal.AnimalId)" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Hayvan Detayı - @animal.Name</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary">Hayvan Bilgileri</h6>
+                            <p><strong>Ad:</strong> @animal.Name</p>
+                            <p><strong>Tür:</strong> @animal.Type</p>
+                            <p><strong>Cins:</strong> @(animal.Breed ?? "Belirtilmemiş")</p>
+                            <p><strong>Cinsiyet:</strong> @(animal.Gender ?? "Belirtilmemiş")</p>
+                            <p><strong>Doğum Tarihi:</strong> 
+                                @if (animal.BirthDate.HasValue)
+                                {
+                                    <span>@animal.BirthDate.Value.ToString("dd.MM.yyyy")</span>
+                                }
+                                else
+                                {
+                                    <span class="text-muted">Bilinmiyor</span>
+                                }
+                            </p>
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-primary">Sahip Bilgileri</h6>
+                            <p><strong>Ad Soyad:</strong> @animal.User?.FirstName @animal.User?.LastName</p>
+                            <p><strong>Email:</strong> @animal.User?.Email</p>
+                            <p><strong>Telefon:</strong> @animal.User?.Phone</p>
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6 class="text-primary">Randevu Geçmişi</h6>
+                            @if (animal.Appointments?.Any() == true)
+                            {
+                                <p><strong>Toplam Randevu:</strong> @animal.Appointments.Count()</p>
+                                <p><strong>Gelecek Randevu:</strong> @animal.Appointments.Where(a => a.AppointmentDateTime > DateTime.Now).Count()</p>
+                                <p><strong>Tamamlanan:</strong> @animal.Appointments.Where(a => a.AppointmentDateTime < DateTime.Now).Count()</p>
+                            }
+                            else
+                            {
+                                <p class="text-muted">Henüz randevu bulunmuyor</p>
+                            }
+                        </div>
+                        <div class="col-md-6">
+                            <h6 class="text-primary">Hizmet Bilgileri</h6>
+                            <p class="text-muted">Hizmet bilgileri yakında eklenecek</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Kapat</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+function editAnimal(animalId) {
+    // Burada hayvan düzenleme modal'ı açılabilir
+    alert('Hayvan düzenleme özelliği yakında eklenecek!');
+}
+</script>
+
+<style>
+.avatar {
+    font-size: 1.2rem;
+}
+</style>

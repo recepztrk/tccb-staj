@@ -1,0 +1,281 @@
+@model VetLineApp.ViewModels.CreateAppointmentViewModel
+
+@{
+    ViewData["Title"] = "Randevu Al";
+    var userAnimals = ViewBag.UserAnimals as List<VetLineApp.Models.Animal> ?? new List<VetLineApp.Models.Animal>();
+}
+
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="card shadow-lg">
+                <div class="card-header bg-primary text-white text-center">
+                    <h3 class="mb-0">
+                        <i class="fas fa-calendar-plus me-2"></i>
+                        Randevu Alma
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <form asp-action="Create" method="post">
+                        <div asp-validation-summary="ModelOnly" class="alert alert-danger d-none"></div>
+                        
+                        <div class="row">
+                            <!-- Sahip Bilgileri -->
+                            <div class="col-md-6">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-user me-2"></i>
+                                    Sahip Bilgileri:
+                                </h5>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold">Ad:</label>
+                                        <input asp-for="OwnerFirstName" class="form-control bg-light" readonly />
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold">Soyad:</label>
+                                        <input asp-for="OwnerLastName" class="form-control bg-light" readonly />
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">E-Posta Adresi:</label>
+                                    <input asp-for="OwnerEmail" class="form-control bg-light" readonly />
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">Telefon Numarası:</label>
+                                    <input asp-for="OwnerPhone" class="form-control bg-light" readonly />
+                                </div>
+                            </div>
+
+                            <!-- Hayvan Bilgileri -->
+                            <div class="col-md-6">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-paw me-2"></i>
+                                    Hayvan Bilgileri:
+                                </h5>
+
+                                @if (userAnimals.Any())
+                                {
+                                    <div class="mb-3">
+                                        <label class="form-label fw-semibold">Kayıtlı Hayvan Seç:</label>
+                                        <select asp-for="ExistingAnimalId" class="form-select" id="animalSelect">
+                                            <option value="">Yeni hayvan ekle</option>
+                                            @foreach (var animal in userAnimals)
+                                            {
+                                                                                <option value="@animal.AnimalId" 
+                                        data-name="@animal.Name"
+                                        data-type="@animal.Type"
+                                        data-breed="@(animal.Breed ?? "")"
+                                        data-gender="@(animal.Gender ?? "")"
+                                        data-age="@(animal.BirthDate.HasValue ? (DateTime.Now.Year - animal.BirthDate.Value.Year).ToString() : "")">
+                                    @animal.Name (@animal.Type)
+                                </option>
+                                            }
+                                        </select>
+                                    </div>
+                                }
+
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold">Ad:</label>
+                                        <input asp-for="AnimalName" class="form-control" placeholder="Hayvan adı" />
+                                        <span asp-validation-for="AnimalName" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold">Yaş:</label>
+                                        <input asp-for="AnimalAge" class="form-control" placeholder="Örn: 3" />
+                                        <span asp-validation-for="AnimalAge" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold">Tür:</label>
+                                        <select asp-for="AnimalType" class="form-select">
+                                            <option value="">Tür seçiniz</option>
+                                            <option value="Kedi">Kedi</option>
+                                            <option value="Köpek">Köpek</option>
+                                            <option value="Kuş">Kuş</option>
+                                            <option value="Hamster">Hamster</option>
+                                            <option value="Tavşan">Tavşan</option>
+                                            <option value="Diğer">Diğer</option>
+                                        </select>
+                                        <span asp-validation-for="AnimalType" class="text-danger"></span>
+                                    </div>
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold">Cins:</label>
+                                        <input asp-for="AnimalBreed" class="form-control" placeholder="Örn: British Shorthair" />
+                                        <span asp-validation-for="AnimalBreed" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-6">
+                                        <label class="form-label fw-semibold">Cinsiyet:</label>
+                                        <select asp-for="AnimalGender" class="form-select">
+                                            <option value="">Cinsiyet seçiniz</option>
+                                            <option value="Erkek">Erkek</option>
+                                            <option value="Dişi">Dişi</option>
+                                        </select>
+                                        <span asp-validation-for="AnimalGender" class="text-danger"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Randevu Bilgileri -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-calendar-alt me-2"></i>
+                                    Randevu Tarihi ve Saati:
+                                </h5>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <input asp-for="AppointmentDate" class="form-control me-2" type="date" />
+                                    <i class="fas fa-calendar-alt fa-2x text-primary"></i>
+                                </div>
+                                <span asp-validation-for="AppointmentDate" class="text-danger"></span>
+                            </div>
+                            
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <input asp-for="AppointmentTime" class="form-control me-2" type="time" />
+                                    <i class="fas fa-clock fa-2x text-primary"></i>
+                                </div>
+                                <span asp-validation-for="AppointmentTime" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Hizmet Seçimi -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-stethoscope me-2"></i>
+                                    Hizmet Seçimi:
+                                </h5>
+                                <select asp-for="ServiceId" class="form-select form-select-lg" required>
+                                    <option value="">Hizmet seçiniz</option>
+                                    @{
+                                        var services = ViewBag.Services as List<VetLineApp.Models.Service> ?? new List<VetLineApp.Models.Service>();
+                                        foreach (var service in services)
+                                        {
+                                            <option value="@service.ServiceId">@service.Title - @service.ShortDescription</option>
+                                        }
+                                    }
+                                </select>
+                                <span asp-validation-for="ServiceId" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <!-- Şikayet -->
+                        <div class="row">
+                            <div class="col-12">
+                                <h5 class="text-primary mb-3">
+                                    <i class="fas fa-comment-medical me-2"></i>
+                                    Şikayet:
+                                </h5>
+                                <textarea asp-for="Complaint" class="form-control" rows="4" 
+                                          placeholder="Hayvanınızın sağlık durumu, şikayetleri veya özel notlarınızı buraya yazabilirsiniz..."></textarea>
+                                <span asp-validation-for="Complaint" class="text-danger"></span>
+                            </div>
+                        </div>
+
+                        <div class="d-flex justify-content-between mt-4">
+                            <a href="javascript:history.back()" class="btn btn-outline-secondary btn-lg">
+                                <i class="fas fa-arrow-left me-1"></i>
+                                Geri Dön
+                            </a>
+                            <button type="submit" class="btn btn-success btn-lg px-5">
+                                <i class="fas fa-calendar-check me-2"></i>
+                                Randevu Oluştur
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    <script>
+        // Kayıtlı hayvan seçildiğinde form alanlarını doldur
+        document.getElementById('animalSelect')?.addEventListener('change', function() {
+            const selectedOption = this.options[this.selectedIndex];
+            
+            if (selectedOption.value) {
+                // Seçilen hayvan bilgilerini form alanlarına doldur
+                document.querySelector('input[name="AnimalName"]').value = selectedOption.dataset.name || '';
+                document.querySelector('input[name="AnimalAge"]').value = selectedOption.dataset.age || '';
+                document.querySelector('select[name="AnimalType"]').value = selectedOption.dataset.type || '';
+                document.querySelector('input[name="AnimalBreed"]').value = selectedOption.dataset.breed || '';
+                document.querySelector('select[name="AnimalGender"]').value = selectedOption.dataset.gender || '';
+                
+                // Alanları readonly yap
+                document.querySelector('input[name="AnimalName"]').readOnly = true;
+                document.querySelector('input[name="AnimalAge"]').readOnly = true;
+                document.querySelector('select[name="AnimalType"]').disabled = true;
+                document.querySelector('input[name="AnimalBreed"]').readOnly = true;
+                document.querySelector('select[name="AnimalGender"]').disabled = true;
+                
+                // Stilleri güncelle
+                document.querySelector('input[name="AnimalName"]').classList.add('bg-light');
+                document.querySelector('input[name="AnimalAge"]').classList.add('bg-light');
+                document.querySelector('select[name="AnimalType"]').classList.add('bg-light');
+                document.querySelector('input[name="AnimalBreed"]').classList.add('bg-light');
+                document.querySelector('select[name="AnimalGender"]').classList.add('bg-light');
+            } else {
+                // Yeni hayvan seçildi - alanları temizle ve düzenlenebilir yap
+                document.querySelector('input[name="AnimalName"]').value = '';
+                document.querySelector('input[name="AnimalAge"]').value = '';
+                document.querySelector('select[name="AnimalType"]').value = '';
+                document.querySelector('input[name="AnimalBreed"]').value = '';
+                document.querySelector('select[name="AnimalGender"]').value = '';
+                
+                // Alanları düzenlenebilir yap
+                document.querySelector('input[name="AnimalName"]').readOnly = false;
+                document.querySelector('input[name="AnimalAge"]').readOnly = false;
+                document.querySelector('select[name="AnimalType"]').disabled = false;
+                document.querySelector('input[name="AnimalBreed"]').readOnly = false;
+                document.querySelector('select[name="AnimalGender"]').disabled = false;
+                
+                // Stilleri güncelle
+                document.querySelector('input[name="AnimalName"]').classList.remove('bg-light');
+                document.querySelector('input[name="AnimalAge"]').classList.remove('bg-light');
+                document.querySelector('select[name="AnimalType"]').classList.remove('bg-light');
+                document.querySelector('input[name="AnimalBreed"]').classList.remove('bg-light');
+                document.querySelector('select[name="AnimalGender"]').classList.remove('bg-light');
+            }
+        });
+
+        // Sayfa yüklendiğinde minimum tarih ayarla (bugün)
+        document.addEventListener('DOMContentLoaded', function() {
+            const dateInput = document.querySelector('input[name="AppointmentDate"]');
+            if (dateInput) {
+                const today = new Date();
+                const tomorrow = new Date(today);
+                tomorrow.setDate(tomorrow.getDate() + 1);
+                dateInput.min = tomorrow.toISOString().split('T')[0];
+            }
+
+            // URL'den serviceId parametresini al ve seç
+            const urlParams = new URLSearchParams(window.location.search);
+            const serviceId = urlParams.get('serviceId');
+            if (serviceId && serviceId !== 'null') {
+                const serviceSelect = document.querySelector('select[name="ServiceId"]');
+                if (serviceSelect) {
+                    serviceSelect.value = serviceId;
+                }
+            }
+        });
+    </script>
+}

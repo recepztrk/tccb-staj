@@ -1,0 +1,305 @@
+@model VetLineApp.ViewModels.ContactViewModel
+
+@{
+    ViewData["Title"] = "İletişim";
+}
+
+<!-- Contact Info Section -->
+<section class="contact-info-section py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h1 class="display-4 fw-bold text-primary mb-3">
+                    <i class="fas fa-envelope"></i> İletişim
+                </h1>
+                <p class="lead text-muted">Bizimle iletişime geçin, size yardımcı olmaktan mutluluk duyarız</p>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm h-100 text-center">
+                    <div class="card-body p-4">
+                        <div class="contact-icon mb-3">
+                            <i class="fas fa-phone fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="fw-bold">Telefon</h5>
+                        <p class="text-muted">Randevu ve bilgi için</p>
+                        <a href="tel:@Model.Phone" class="btn btn-outline-primary">
+                            @Model.Phone
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm h-100 text-center">
+                    <div class="card-body p-4">
+                        <div class="contact-icon mb-3">
+                            <i class="fas fa-envelope fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="fw-bold">E-posta</h5>
+                        <p class="text-muted">7/24 mesaj gönderebilirsiniz</p>
+                        <a href="mailto:@Model.Email" class="btn btn-outline-primary">
+                            @Model.Email
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-4 mb-4">
+                <div class="card border-0 shadow-sm h-100 text-center">
+                    <div class="card-body p-4">
+                        <div class="contact-icon mb-3">
+                            <i class="fas fa-map-marker-alt fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="fw-bold">Adres</h5>
+                        <p class="text-muted">@Model.Address</p>
+                        <button class="btn btn-outline-primary" onclick="scrollToMap()">
+                            <i class="fas fa-map"></i> Haritada Gör
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Social Media Links -->
+        <div class="row mt-5">
+            <div class="col-12 text-center">
+                <h4 class="mb-4">Sosyal Medyada Takip Edin</h4>
+                <div class="social-links">
+                    @if (!string.IsNullOrEmpty(Model.Facebook))
+                    {
+                        <a href="@Model.Facebook" target="_blank" class="btn btn-outline-primary me-2 mb-2">
+                            <i class="fab fa-facebook"></i> Facebook
+                        </a>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Instagram))
+                    {
+                        <a href="@Model.Instagram" target="_blank" class="btn btn-outline-primary me-2 mb-2">
+                            <i class="fab fa-instagram"></i> Instagram
+                        </a>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.Youtube))
+                    {
+                        <a href="@Model.Youtube" target="_blank" class="btn btn-outline-primary me-2 mb-2">
+                            <i class="fab fa-youtube"></i> YouTube
+                        </a>
+                    }
+                    @if (!string.IsNullOrEmpty(Model.X))
+                    {
+                        <a href="@Model.X" target="_blank" class="btn btn-outline-primary me-2 mb-2">
+                            <i class="fab fa-twitter"></i> X (Twitter)
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Emergency Contact -->
+<section id="emergency" class="emergency-section py-4 bg-danger text-white">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h4 class="mb-2">
+                    <i class="fas fa-ambulance"></i> Acil Durum
+                </h4>
+                <p class="mb-0">Evcil dostunuzun acil tıbbi müdahaleye ihtiyacı var mı? Hemen bizi arayın!</p>
+            </div>
+            <div class="col-md-4 text-md-end">
+                <a href="tel:@Model.Phone" class="btn btn-light btn-lg">
+                    <i class="fas fa-phone"></i> Acil Ara
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reviews Section -->
+@if (Model.Testimonials.Any())
+{
+    <section id="yorum" class="reviews-section py-5 bg-light">
+        <div class="container">
+            <!-- Success Message -->
+            @if (TempData["Success"] != null)
+            {
+                <div class="row mb-4">
+                    <div class="col-12">
+                        <div class="alert alert-success alert-dismissible fade show">
+                            <i class="fas fa-check-circle"></i> @TempData["Success"]
+                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                        </div>
+                    </div>
+                </div>
+            }
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="d-flex justify-content-between align-items-center mb-5">
+                        <div>
+                            <h2 class="display-5 fw-bold text-primary">Kullanıcı Yorumları</h2>
+                            <p class="lead text-muted">Müşterilerimizin deneyimlerini okuyun</p>
+                        </div>
+                        <div>
+                            @if (!string.IsNullOrEmpty(Context.Session.GetString("UserId")))
+                            {
+                                <button type="button" class="btn btn-primary btn-lg" data-bs-toggle="modal" data-bs-target="#reviewModal">
+                                    <i class="fas fa-plus"></i> Yorum Yaz
+                                </button>
+                            }
+                            else
+                            {
+                                <a asp-controller="Account" asp-action="Login" asp-route-returnUrl="@(Url.Action("Contact", "Home") + "#yorum")" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-plus"></i> Yorum Yaz
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row">
+                @foreach (var testimonial in Model.Testimonials)
+                {
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card border-0 shadow-sm h-100">
+                            <div class="card-body p-4">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px;">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold">@testimonial.Name</h6>
+                                        <small class="text-muted">@testimonial.Date.ToString("dd MMMM yyyy")</small>
+                                    </div>
+                                </div>
+                                <p class="card-text mt-3">"@testimonial.Content"</p>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </section>
+}
+
+<!-- Review Modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="reviewModalLabel">
+                    <i class="fas fa-comment"></i> Yorum Ekle
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form asp-controller="Home" asp-action="AddReview" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    @if (ViewBag.ReviewModel != null)
+                    {
+                        <div asp-validation-summary="All" class="text-danger mb-3"></div>
+                    }
+
+                    <div class="mb-4">
+                        <label class="form-label fw-semibold">
+                            <i class="fas fa-user"></i> Kullanıcı
+                        </label>
+                        <div class="form-control-plaintext bg-light p-2 rounded">
+                            @Context.Session.GetString("UserName")
+                        </div>
+                    </div>
+
+
+
+                    <div class="mb-3">
+                        <label for="Message" class="form-label fw-semibold">
+                            <i class="fas fa-comment"></i> Yorumunuz
+                        </label>
+                        <textarea name="Message" id="Message" class="form-control" rows="4" 
+                                  placeholder="Deneyiminizi diğer kullanıcılarla paylaşın...">@(ViewBag.ReviewModel?.Message)</textarea>
+                        <div class="invalid-feedback"></div>
+                        <div class="form-text">
+                            <i class="fas fa-info-circle"></i> En fazla 1000 karakter yazabilirsiniz.
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                        <i class="fas fa-times"></i> İptal
+                    </button>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-paper-plane"></i> Yorum Gönder
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Map Section -->
+<section class="map-section">
+    <div class="container-fluid p-0">
+        <div id="map" style="height: 400px; width: 100%;">
+            <!-- Google Maps embed -->
+            <iframe 
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.6848!2d@(Model.MapLng.ToString("F6", System.Globalization.CultureInfo.InvariantCulture))!3d@(Model.MapLat.ToString("F6", System.Globalization.CultureInfo.InvariantCulture))!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDHCsDA0JzIwLjIiTiAyOMKwNTgnNDIuMiJF!5e0!3m2!1str!2str!4v1234567890123"
+                width="100%" 
+                height="400" 
+                style="border:0;" 
+                allowfullscreen="" 
+                loading="lazy" 
+                referrerpolicy="no-referrer-when-downgrade">
+            </iframe>
+        </div>
+    </div>
+</section>
+
+<script>
+    function scrollToMap() {
+        document.getElementById('map').scrollIntoView({ behavior: 'smooth' });
+    }
+</script>
+
+<style>
+    .contact-icon {
+        transition: transform 0.3s ease;
+    }
+    
+    .card:hover .contact-icon {
+        transform: scale(1.1);
+    }
+    
+    .social-links a {
+        transition: transform 0.3s ease;
+    }
+    
+    .social-links a:hover {
+        transform: translateY(-2px);
+    }
+    
+    .emergency-section {
+        background: linear-gradient(135deg, #dc3545 0%, #c82333 100%) !important;
+    }
+    
+
+    
+    .modal-header.bg-primary {
+        border-bottom: none;
+    }
+    
+    .modal-footer {
+        border-top: 1px solid #dee2e6;
+    }
+    
+    @@media (max-width: 768px) {
+        .emergency-section .col-md-4 {
+            text-align: center !important;
+            margin-top: 1rem;
+        }
+        
+
+    }
+</style>

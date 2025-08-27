@@ -1,0 +1,139 @@
+@model VetLineApp.Models.Animal
+
+@{
+    ViewData["Title"] = "Hayvan Detayları";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-paw me-2"></i>
+                        Hayvan Detayları
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5 class="text-primary mb-3">Temel Bilgiler</h5>
+                            <dl class="row">
+                                <dt class="col-sm-4">Ad:</dt>
+                                <dd class="col-sm-8">@Model.Name</dd>
+
+                                <dt class="col-sm-4">Tür:</dt>
+                                <dd class="col-sm-8">@Model.Type</dd>
+
+                                <dt class="col-sm-4">Cins:</dt>
+                                <dd class="col-sm-8">@(Model.Breed ?? "Belirtilmemiş")</dd>
+
+                                <dt class="col-sm-4">Cinsiyet:</dt>
+                                <dd class="col-sm-8">@(Model.Gender ?? "Belirtilmemiş")</dd>
+
+                                <dt class="col-sm-4">Doğum Tarihi:</dt>
+                                <dd class="col-sm-8">
+                                    @if (Model.BirthDate.HasValue)
+                                    {
+                                        @Model.BirthDate.Value.ToString("dd.MM.yyyy")
+                                        <br>
+                                        <small class="text-muted">
+                                            (@(DateTime.Now.Year - Model.BirthDate.Value.Year) yaşında)
+                                        </small>
+                                    }
+                                    else
+                                    {
+                                        <span class="text-muted">Belirtilmemiş</span>
+                                    }
+                                </dd>
+                            </dl>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="text-primary mb-3">Sahip Bilgileri</h5>
+                            <dl class="row">
+                                <dt class="col-sm-4">Ad Soyad:</dt>
+                                <dd class="col-sm-8">@Model.User.FirstName @Model.User.LastName</dd>
+
+                                <dt class="col-sm-4">E-posta:</dt>
+                                <dd class="col-sm-8">@Model.User.Email</dd>
+
+                                <dt class="col-sm-4">Telefon:</dt>
+                                <dd class="col-sm-8">@(Model.User.Phone ?? "Belirtilmemiş")</dd>
+                            </dl>
+                        </div>
+                    </div>
+
+                    @if (Model.Appointments != null && Model.Appointments.Any())
+                    {
+                        <hr class="my-4">
+                        <h5 class="text-primary mb-3">Randevu Geçmişi</h5>
+                        <div class="table-responsive">
+                            <table class="table table-sm table-hover">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Tarih</th>
+                                        <th>Hizmet</th>
+                                        <th>Şikayet</th>
+                                        <th>Durum</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var appointment in Model.Appointments.OrderByDescending(a => a.AppointmentDateTime))
+                                    {
+                                        <tr>
+                                            <td>@appointment.AppointmentDateTime.ToString("dd.MM.yyyy HH:mm")</td>
+                                            <td>
+                                                @if (appointment.Service != null)
+                                                {
+                                                    <span class="badge bg-info">@appointment.Service.Title</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">Belirtilmemiş</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (!string.IsNullOrEmpty(appointment.Complaint))
+                                                {
+                                                    <span>@(appointment.Complaint.Length > 30 ? appointment.Complaint.Substring(0, 30) + "..." : appointment.Complaint)</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="text-muted">-</span>
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (appointment.AppointmentDateTime > DateTime.Now)
+                                                {
+                                                    <span class="badge bg-success">Gelecek</span>
+                                                }
+                                                else if (appointment.AppointmentDateTime.Date == DateTime.Now.Date)
+                                                {
+                                                    <span class="badge bg-warning">Bugün</span>
+                                                }
+                                                else
+                                                {
+                                                    <span class="badge bg-secondary">Geçmiş</span>
+                                                }
+                                            </td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </div>
+                    }
+                </div>
+                <div class="card-footer text-center">
+                    <a href="javascript:history.back()" class="btn btn-outline-secondary me-2">
+                        <i class="fas fa-arrow-left me-1"></i>
+                        Geri Dön
+                    </a>
+                    <a asp-action="Index" class="btn btn-primary">
+                        <i class="fas fa-list me-1"></i>
+                        Tüm Hayvanlar
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

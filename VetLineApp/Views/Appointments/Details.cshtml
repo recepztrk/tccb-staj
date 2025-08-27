@@ -1,0 +1,106 @@
+@model VetLineApp.Models.Appointment
+
+@{
+    ViewData["Title"] = "Randevu Detayları";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0">
+                        <i class="fas fa-calendar-alt"></i> Randevu Detayları
+                    </h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <h6 class="text-muted mb-2">
+                                    <i class="fas fa-calendar"></i> Randevu Tarihi ve Saati
+                                </h6>
+                                <p class="h5 text-primary">@Model.AppointmentDateTime.ToString("dd MMMM yyyy, dddd")</p>
+                                <p class="h6 text-success">@Model.AppointmentDateTime.ToString("HH:mm")</p>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <h6 class="text-muted mb-2">
+                                    <i class="fas fa-clock"></i> Durum
+                                </h6>
+                                @if (Model.AppointmentDateTime > DateTime.Now)
+                                {
+                                    <span class="badge bg-success fs-6">Gelecek Randevu</span>
+                                }
+                                else if (Model.AppointmentDateTime.Date == DateTime.Now.Date)
+                                {
+                                    <span class="badge bg-warning fs-6">Bugün</span>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-secondary fs-6">Tamamlanmış</span>
+                                }
+                            </div>
+                        </div>
+                    </div>
+
+                    <hr>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <h6 class="text-muted mb-2">
+                                    <i class="fas fa-paw"></i> Evcil Hayvan
+                                </h6>
+                                <p class="h6">@Model.Animal.Name</p>
+                                <small class="text-muted">@Model.Animal.Type - @Model.Animal.Breed</small>
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <div class="mb-4">
+                                <h6 class="text-muted mb-2">
+                                    <i class="fas fa-user"></i> Randevu Sahibi
+                                </h6>
+                                <p class="h6">@Model.User.FirstName @Model.User.LastName</p>
+                                <small class="text-muted">@Model.User.Email</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.Complaint))
+                    {
+                        <hr>
+                        <div class="mb-4">
+                            <h6 class="text-muted mb-2">
+                                <i class="fas fa-comment-medical"></i> Şikayet ve Notlar
+                            </h6>
+                            <div class="alert alert-light">
+                                <p class="mb-0">@Model.Complaint</p>
+                            </div>
+                        </div>
+                    }
+                </div>
+                
+                <div class="card-footer bg-light">
+                    <div class="d-flex justify-content-between">
+                        <a asp-action="Index" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left"></i> Tüm Randevular
+                        </a>
+                        
+                        @if (Model.AppointmentDateTime > DateTime.Now)
+                        {
+                            <div>
+                                <a asp-action="Delete" asp-route-id="@Model.AppointmentId" class="btn btn-danger">
+                                    <i class="fas fa-times"></i> İptal Et
+                                </a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,333 @@
+﻿@model VetLineApp.ViewModels.HomeViewModel
+
+@{
+    ViewData["Title"] = "Ana Sayfa";
+}
+
+<!-- Hero Slider Section -->
+<section class="hero-slider mb-5">
+    <div id="heroCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="5000">
+        <div class="carousel-indicators">
+            @for (int i = 0; i < Model.Slider.Count; i++)
+            {
+                <button type="button" data-bs-target="#heroCarousel" data-bs-slide-to="@i" 
+                        class="@(i == 0 ? "active" : "")" aria-current="@(i == 0 ? "true" : "false")" 
+                        aria-label="Slide @(i + 1)"></button>
+            }
+        </div>
+        <div class="carousel-inner">
+            @for (int i = 0; i < Model.Slider.Count; i++)
+            {
+                var slide = Model.Slider[i];
+                <div class="carousel-item @(i == 0 ? "active" : "")">
+                    <div class="hero-slide bg-primary text-white py-5">
+                        <div class="container">
+                            <div class="row align-items-center min-vh-50">
+                                <div class="col-lg-6">
+                                    <h1 class="display-4 fw-bold mb-4">@slide.Title</h1>
+                                    <p class="lead mb-4">@slide.Subtitle</p>
+                                    @if (!string.IsNullOrEmpty(slide.CtaText) && !string.IsNullOrEmpty(slide.CtaHref))
+                                    {
+                                        <a href="@slide.CtaHref" class="btn btn-light btn-lg">
+                                            <i class="fas fa-arrow-right"></i> @slide.CtaText
+                                        </a>
+                                    }
+                                </div>
+                                <div class="col-lg-6 text-center">
+                                    <img src="@(slide.ImageUrl)" alt="@slide.Title" class="img-fluid slider-image">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <button class="carousel-control-prev" type="button" data-bs-target="#heroCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#heroCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+</section>
+
+<!-- Appointment CTA Section -->
+<section class="appointment-cta-section py-4 mb-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-12 text-center">
+                <div class="bg-success text-white p-4 rounded-3 shadow">
+                    <h3 class="mb-3">
+                        <i class="fas fa-calendar-check"></i> Evcil Dostunuz İçin Randevu Alın
+                    </h3>
+                    <p class="mb-4">Profesyonel veteriner hizmetlerimizden yararlanmak için hemen randevu alabilirsiniz.</p>
+                    <a href="@Model.AppointmentCtaHref" class="btn btn-light btn-lg px-4">
+                        <i class="fas fa-calendar-plus"></i> Randevu Al
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Info Boxes Section -->
+<section class="info-boxes-section py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-5 fw-bold text-primary">Hakkımızda</h2>
+                <p class="lead text-muted">VetLine olarak evcil dostlarınız için en iyi hizmeti sunuyoruz</p>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var infoBox in Model.InfoBoxes)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="card h-100 border-0 shadow-sm">
+                        <div class="card-body p-4">
+                            <h5 class="card-title text-primary fw-bold">@infoBox.Title</h5>
+                            <p class="card-text">@infoBox.Excerpt</p>
+                        </div>
+                        <div class="card-footer bg-transparent border-0 p-4 pt-0">
+                            <a href="@infoBox.LinkHref" class="btn btn-outline-primary">
+                                @infoBox.LinkText <i class="fas fa-arrow-right ms-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+<!-- Featured Products Section -->
+@if (Model.FeaturedProducts.Any())
+{
+    <section class="featured-products-section py-5 bg-light">
+        <div class="container">
+            <div class="row text-center mb-5">
+                <div class="col-12">
+                    <h2 class="display-5 fw-bold text-primary">Öne Çıkan Ürünler</h2>
+                    <p class="lead text-muted">Evcil dostlarınız için kaliteli ürünlerimizi keşfedin</p>
+                </div>
+            </div>
+            <div class="row">
+                @foreach (var product in Model.FeaturedProducts)
+                {
+                    <div class="col-md-4 mb-4">
+                        <div class="card h-100 border-0 shadow-sm product-card">
+                            <div class="card-img-top-container">
+                                <img src="@product.ImageUrl" alt="@product.Name" class="card-img-top product-image">
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">@product.Name</h5>
+                                <p class="card-text text-muted">@product.Excerpt</p>
+                                @if (product.Price.HasValue)
+                                {
+                                    <p class="price text-success fw-bold mb-3">@product.Price.Value.ToString("C")</p>
+                                }
+                            </div>
+                            <div class="card-footer bg-transparent border-0">
+                                <a href="@product.LinkHref" class="btn btn-outline-primary w-100">
+                                    <i class="fas fa-eye"></i> Detaylı Bilgi
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="text-center mt-4">
+                <a asp-controller="Products" asp-action="Index" class="btn btn-primary btn-lg">
+                    Tüm Ürünleri Görüntüle <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+}
+
+<!-- Services Preview -->
+<section class="services-preview py-5">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-5 fw-bold text-primary">Hizmetlerimiz</h2>
+                <p class="lead text-muted">Evcil dostlarınız için sunduğumuz profesyonel hizmetler</p>
+            </div>
+        </div>
+        <div class="row">
+            @foreach (var service in Model.Services)
+            {
+                <div class="col-md-4 mb-4">
+                    <div class="service-card text-center p-4 h-100">
+                        <div class="service-icon mb-3">
+                            <i class="@service.Icon fa-3x text-primary"></i>
+                        </div>
+                        <h5 class="fw-bold">@service.Title</h5>
+                        <p class="text-muted mb-4">@service.Excerpt</p>
+                        <a href="@service.LinkHref" class="btn btn-outline-primary">
+                            @service.LinkText <i class="fas fa-arrow-right ms-1"></i>
+                        </a>
+                    </div>
+                </div>
+            }
+        </div>
+        <div class="text-center mt-4">
+            <a asp-controller="Services" asp-action="Index" class="btn btn-primary btn-lg">
+                Tüm Hizmetleri Görüntüle <i class="fas fa-arrow-right"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+<section class="testimonials-section py-5 bg-light">
+    <div class="container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-5 fw-bold text-primary">Kullanıcı Yorumları</h2>
+                <p class="lead text-muted">Müşterilerimizin deneyimlerini öğrenin</p>
+            </div>
+        </div>
+        
+        @if (Model.Testimonials.Any())
+        {
+            <div class="row">
+                @foreach (var testimonial in Model.Testimonials)
+                {
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="card h-100 border-0 shadow-sm testimonial-card">
+                            <div class="card-body p-4">
+                                <div class="mb-3">
+                                    <i class="fas fa-quote-left fa-2x text-primary mb-3"></i>
+                                </div>
+                                <p class="card-text mb-4">"@testimonial.Content"</p>
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-shrink-0">
+                                        <div class="avatar bg-primary text-white rounded-circle d-flex align-items-center justify-content-center" style="width: 50px; height: 50px;">
+                                            <i class="fas fa-user"></i>
+                                        </div>
+                                    </div>
+                                    <div class="flex-grow-1 ms-3">
+                                        <h6 class="mb-0 fw-bold">@testimonial.Name</h6>
+                                        <small class="text-muted">@testimonial.Date.ToString("dd MMMM yyyy")</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            
+            <!-- View All Reviews Button -->
+            <div class="text-center mt-4">
+                <a asp-controller="Home" asp-action="Contact" asp-fragment="yorum" class="btn btn-primary btn-lg">
+                    Tüm Yorumları Görüntüle <i class="fas fa-arrow-right"></i>
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-12 text-center">
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> Henüz yorum bulunmuyor. 
+                        <a asp-controller="Home" asp-action="Contact" asp-fragment="yorum" class="alert-link">İlk yorumu siz yapın!</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>
+
+<style>
+    .hero-slide {
+        background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    }
+    
+    .min-vh-50 {
+        min-height: 50vh;
+    }
+    
+    .slider-image {
+        max-height: 300px;
+        object-fit: contain;
+    }
+    
+    .service-card {
+        transition: transform 0.3s ease;
+        border-radius: 10px;
+        border: 1px solid #e9ecef;
+        background: white;
+    }
+    
+    .service-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .service-icon {
+        transition: transform 0.3s ease;
+    }
+    
+    .service-card:hover .service-icon {
+        transform: scale(1.1);
+    }
+    
+    .product-card {
+        transition: transform 0.3s ease;
+    }
+    
+    .product-card:hover {
+        transform: translateY(-3px);
+    }
+    
+    .card-img-top-container {
+        height: 200px;
+        overflow: hidden;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #f8f9fa;
+    }
+    
+    .product-image {
+        max-height: 180px;
+        object-fit: contain;
+        width: auto;
+    }
+    
+    .testimonial-card {
+        transition: transform 0.3s ease;
+    }
+    
+    .testimonial-card:hover {
+        transform: translateY(-3px);
+    }
+    
+    .carousel-indicators button {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        margin: 0 5px;
+    }
+    
+    .carousel-control-prev,
+    .carousel-control-next {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background-color: rgba(0,0,0,0.3);
+        top: 50%;
+        transform: translateY(-50%);
+    }
+    
+    .carousel-control-prev {
+        left: 20px;
+    }
+    
+    .carousel-control-next {
+        right: 20px;
+    }
+</style>

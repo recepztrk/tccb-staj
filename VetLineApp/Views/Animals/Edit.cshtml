@@ -1,0 +1,157 @@
+@model VetLineApp.Models.Animal
+
+@{
+    ViewData["Title"] = "Hayvan Düzenle";
+}
+
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">
+                        <i class="fas fa-edit me-2"></i>
+                        Hayvan Bilgilerini Düzenle
+                    </h3>
+                </div>
+                <div class="card-body">
+                    <form asp-action="Edit" method="post">
+                        <input type="hidden" asp-for="AnimalId" />
+                        <input type="hidden" asp-for="UserId" />
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Name" class="form-label fw-semibold">
+                                        <i class="fas fa-paw me-1"></i>
+                                        Hayvan Adı:
+                                    </label>
+                                    <input asp-for="Name" class="form-control" placeholder="Hayvan adını giriniz" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Type" class="form-label fw-semibold">
+                                        <i class="fas fa-tag me-1"></i>
+                                        Tür:
+                                    </label>
+                                    <select asp-for="Type" class="form-select">
+                                        <option value="">Tür seçiniz</option>
+                                        <option value="Kedi">Kedi</option>
+                                        <option value="Köpek">Köpek</option>
+                                        <option value="Kuş">Kuş</option>
+                                        <option value="Hamster">Hamster</option>
+                                        <option value="Tavşan">Tavşan</option>
+                                        <option value="Diğer">Diğer</option>
+                                    </select>
+                                    <span asp-validation-for="Type" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Breed" class="form-label fw-semibold">
+                                        <i class="fas fa-dna me-1"></i>
+                                        Cins:
+                                    </label>
+                                    <input asp-for="Breed" class="form-control" placeholder="Örn: British Shorthair" />
+                                    <span asp-validation-for="Breed" class="text-danger"></span>
+                                </div>
+                            </div>
+                            
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label asp-for="Gender" class="form-label fw-semibold">
+                                        <i class="fas fa-venus-mars me-1"></i>
+                                        Cinsiyet:
+                                    </label>
+                                    <select asp-for="Gender" class="form-select">
+                                        <option value="">Cinsiyet seçiniz</option>
+                                        <option value="Erkek">Erkek</option>
+                                        <option value="Dişi">Dişi</option>
+                                    </select>
+                                    <span asp-validation-for="Gender" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="BirthDate" class="form-label fw-semibold">
+                                        <i class="fas fa-calendar me-1"></i>
+                                        Doğum Tarihi:
+                                    </label>
+                                    <input asp-for="BirthDate" class="form-control" type="date" />
+                                    <span asp-validation-for="BirthDate" class="text-danger"></span>
+                                    <small class="form-text text-muted">
+                                        Doğum tarihi bilinmiyorsa boş bırakabilirsiniz.
+                                    </small>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label fw-semibold">
+                                        <i class="fas fa-user me-1"></i>
+                                        Sahip Bilgileri:
+                                    </label>
+                                    <div class="form-control-plaintext bg-light p-2 rounded">
+                                        @if (Model.User != null)
+                                        {
+                                            <strong>@Model.User.FirstName @Model.User.LastName</strong>
+                                            <br>
+                                            <small class="text-muted">@Model.User.Email</small>
+                                        }
+                                        else
+                                        {
+                                            <span class="text-muted">Sahip bilgileri yüklenemedi</span>
+                                        }
+                                    </div>
+                                    <small class="form-text text-muted">
+                                        Sahip bilgileri değiştirilemez.
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <hr class="my-4">
+
+                        <div class="d-flex justify-content-between">
+                            <a href="javascript:history.back()" class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-1"></i>
+                                Geri Dön
+                            </a>
+                            <div>
+                                <a asp-action="Index" class="btn btn-outline-primary me-2">
+                                    <i class="fas fa-list me-1"></i>
+                                    Tüm Hayvanlar
+                                </a>
+                                <button type="submit" class="btn btn-success">
+                                    <i class="fas fa-save me-1"></i>
+                                    Değişiklikleri Kaydet
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        // Form submit edilmeden önce doğrulama
+        document.querySelector('form').addEventListener('submit', function(e) {
+            const name = document.querySelector('input[name="Name"]').value.trim();
+            const type = document.querySelector('select[name="Type"]').value;
+            
+            if (!name) {
+                e.preventDefault();
+                alert('Hayvan adı zorunludur!');
+                return false;
+            }
+            
+            if (!type) {
+                e.preventDefault();
+                alert('Hayvan türü seçimi zorunludur!');
+                return false;
+            }
+            
+            return true;
+        });
+    </script>
+}

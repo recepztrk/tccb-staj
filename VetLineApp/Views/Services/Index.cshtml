@@ -1,0 +1,90 @@
+@model IEnumerable<VetLineApp.Models.Service>
+
+@{
+    ViewData["Title"] = "Hizmetlerimiz";
+}
+
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12 text-center mb-5">
+            <h2 class="display-4 text-primary">Hizmetlerimiz</h2>
+            <p class="lead">Evcil dostlarınız için sunduğumuz profesyonel veteriner hizmetleri</p>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var service in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm service-card">
+                    <div class="card-body d-flex flex-column">
+                        <div class="service-icon text-center mb-3">
+                            @if (service.Title.Contains("Muayene"))
+                            {
+                                <i class="fas fa-stethoscope fa-3x text-primary"></i>
+                            }
+                            else if (service.Title.Contains("Aşı"))
+                            {
+                                <i class="fas fa-syringe fa-3x text-success"></i>
+                            }
+                            else if (service.Title.Contains("Bakım"))
+                            {
+                                <i class="fas fa-cut fa-3x text-warning"></i>
+                            }
+                            else if (service.Title.Contains("Pet Hotel"))
+                            {
+                                <i class="fas fa-home fa-3x text-info"></i>
+                            }
+                            else
+                            {
+                                <i class="fas fa-heartbeat fa-3x text-secondary"></i>
+                            }
+                        </div>
+                        <h5 class="card-title text-primary text-center">@service.Title</h5>
+                        <p class="card-text flex-grow-1">@service.ShortDescription</p>
+                        <div class="service-details mt-3">
+                            <h6 class="text-muted">Hizmet Detayları:</h6>
+                            <p class="small text-muted">@service.Details</p>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-transparent text-center">
+                        <a href="/Appointments/Create?serviceId=@service.ServiceId" class="btn btn-primary btn-lg w-100">
+                            <i class="fas fa-calendar-plus me-2"></i>Randevu Al
+                        </a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Hizmet yönetimi Admin panelde yapılıyor -->
+</div>
+
+<style>
+.service-card {
+    transition: all 0.3s ease;
+    border: 1px solid rgba(0,0,0,0.1);
+}
+
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    border-color: var(--bs-primary);
+}
+
+.service-icon {
+    padding: 20px 0;
+}
+
+.service-details {
+    background: rgba(0,123,255,0.05);
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid var(--bs-primary);
+}
+
+.card-footer {
+    border-top: 1px solid rgba(0,0,0,0.1);
+    padding: 1rem;
+}
+</style>

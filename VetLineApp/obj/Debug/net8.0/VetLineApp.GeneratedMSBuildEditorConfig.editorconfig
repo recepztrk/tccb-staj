@@ -1,0 +1,167 @@
+is_global = true
+build_property.TargetFramework = net8.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property.EnforceExtendedAnalyzerRules = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = VetLineApp
+build_property.RootNamespace = VetLineApp
+build_property.ProjectDir = /Users/recepozturk/Desktop/VetLine/VetLineApp/
+build_property.EnableComHosting = 
+build_property.EnableGeneratedComInterfaceComImportInterop = 
+build_property.RazorLangVersion = 8.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = /Users/recepozturk/Desktop/VetLine/VetLineApp
+build_property._RazorSourceGeneratorDebug = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Account/AccessDenied.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9BY2Nlc3NEZW5pZWQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Account/EmailSent.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9FbWFpbFNlbnQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Account/EmailVerificationFailed.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9FbWFpbFZlcmlmaWNhdGlvbkZhaWxlZC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Account/Lockout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2Nrb3V0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Account/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Mb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Account/Profile.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9Qcm9maWxlLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Account/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWNjb3VudC9SZWdpc3Rlci5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Admin/Animals.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQW5pbWFscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Admin/Appointments.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vQXBwb2ludG1lbnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Admin/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Admin/Products.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vUHJvZHVjdHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Admin/Users.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQWRtaW4vVXNlcnMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Animals/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQW5pbWFscy9DcmVhdGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Animals/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQW5pbWFscy9EZWxldGUuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Animals/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQW5pbWFscy9EZXRhaWxzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Animals/Edit.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQW5pbWFscy9FZGl0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Animals/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQW5pbWFscy9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Appointments/Create.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXBwb2ludG1lbnRzL0NyZWF0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Appointments/Delete.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXBwb2ludG1lbnRzL0RlbGV0ZS5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Appointments/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXBwb2ludG1lbnRzL0RldGFpbHMuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Appointments/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvQXBwb2ludG1lbnRzL0luZGV4LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Home/About.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9BYm91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Home/Contact.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Db250YWN0LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Home/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmRleC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Home/Inform.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9JbmZvcm0uY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Home/Privacy.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvSG9tZS9Qcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Products/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZHVjdHMvRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Products/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvUHJvZHVjdHMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Services/Details.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VydmljZXMvRGV0YWlscy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Services/Index.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2VydmljZXMvSW5kZXguY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Shared/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL0Vycm9yLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Shared/_AdminLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19BZG1pbkxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Shared/_LoginLayout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19Mb2dpbkxheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Shared/_ValidationScriptsPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/_ViewImports.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdJbXBvcnRzLmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/_ViewStart.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvX1ZpZXdTdGFydC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[/Users/recepozturk/Desktop/VetLine/VetLineApp/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3MvU2hhcmVkL19MYXlvdXQuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = b-qu1lps9dh2
