@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # 🐾 VetLine - Veteriner Kliniği Web Uygulaması
 
 [![.NET](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
@@ -46,6 +45,9 @@ VetLine/
 └── wwwroot/            # Statik dosyalar (CSS, JS, Images)
 ```
 
+### Katmanlı Sistem Mimarisi
+![Katmanlı Sistem Mimarisi](screenshots/Katmanli-Sistem-Mimarisi.png)
+
 ## 🚀 Kurulum ve Çalıştırma
 
 ### Gereksinimler
@@ -84,15 +86,29 @@ VetLine/
 ## 📱 Ekran Görüntüleri
 
 ### Ana Sayfa
-![Ana Sayfa](screenshots/homepage.png)
+![Ana Sayfa](screenshots/anasayfa.png)
 
 ### Kullanıcı Girişi
-![Giriş](screenshots/login.png)
+![Giriş](screenshots/giriş.png)
+
+### Kayıt Ol
+![Kayıt Ol](screenshots/kayıt-ol.png)
+
+### Profil Bilgileri
+![Profil Bilgileri](screenshots/profil-bilgileri.png)
+
+### Randevu Sistemi
+![Randevu Sistemi](screenshots/randevu-sistemi.png)
 
 ### Admin Dashboard
 ![Admin Panel](screenshots/admin-dashboard.png)
 
+### 
+
 ## 🗄️ Veritabanı Yapısı
+
+### Veritabanı Varlık-İlişki Modeli
+![VetLine-ER](screenshots/VetLine-ER.png)
 
 ### Ana Tablolar
 
@@ -134,21 +150,9 @@ Uygulama test edilirken aşağıdaki senaryolar kullanılmıştır:
 - **User Acceptance Tests**: Kullanıcı senaryoları
 - **Security Tests**: Authentication ve authorization testleri
 
-## 📝 Katkıda Bulunma
-
-1. Fork yapın
-2. Feature branch oluşturun (`git checkout -b feature/AmazingFeature`)
-3. Değişikliklerinizi commit edin (`git commit -m 'Add some AmazingFeature'`)
-4. Branch'inizi push edin (`git push origin feature/AmazingFeature`)
-5. Pull Request oluşturun
-
-## 📄 Lisans
-
-Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosyasına bakın.
-
 ## 👨‍💻 Geliştirici
 
-**Ad Soyad** - [GitHub Profili](https://github.com/kullaniciadi)
+**Recep Öztürk** - [GitHub Profili](https://github.com/recepztrk)
 
 ## 🙏 Teşekkürler
 
@@ -159,14 +163,13 @@ Bu proje MIT lisansı altında lisanslanmıştır. Detaylar için `LICENSE` dosy
 
 ## 📞 İletişim
 
-- **Email**: email@example.com
-- **GitHub**: [@kullaniciadi](https://github.com/kullaniciadi)
-- **LinkedIn**: [LinkedIn Profili](https://linkedin.com/in/kullaniciadi)
+- **Email**: recep.ztrk.1907@gmail.com
+- **GitHub**: [GitHub Profili](https://github.com/recepztrk)
+- **LinkedIn**: [LinkedIn Profili](https://www.linkedin.com/in/recep-öztürk-45398525a)
 
 ---
 
 ⭐ Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!
-=======
 # tccb-staj
 Cumhurbaşkanlığı Yazılım Daire Başkanlığı’nda yaptığım staj kapsamında geliştirdiğim projeler ve ek çalışmalar.
 >>>>>>> c5ffd968022cb99471689e3721830ed65f11bf40
