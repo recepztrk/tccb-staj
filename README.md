@@ -9,6 +9,8 @@
 
 VetLine, veteriner kliniği hizmetleri için geliştirilmiş modern ve kapsamlı bir web uygulamasıdır. ASP.NET Core 8.0 MVC mimarisi kullanılarak geliştirilen bu uygulama, veteriner kliniği işletmelerinin dijital dönüşümünü desteklemek amacıyla tasarlanmıştır.
 
+**Bu proje, Cumhurbaşkanlığı Yazılım Daire Başkanlığı'nda yapılan staj kapsamında geliştirilmiştir.**
+
 ### 🎯 Ana Özellikler
 
 - **👥 Kullanıcı Yönetimi**: Güvenli kayıt, giriş ve profil yönetimi
@@ -83,16 +85,36 @@ VetLine/
    https://localhost:5001
    ```
 
+## 📚 Staj Kapsamında Yapılan Araştırma Ödevleri
+
+Staj sürecinde aşağıdaki konularda detaylı araştırma ödevleri tamamlanmıştır:
+
+### 🔍 Araştırma Konuları
+
+- **Container & Sanallaştırma**: Docker, Kubernetes ve container teknolojileri
+- **Network**: Ağ protokolleri, güvenlik ve yönetim
+- **SQL ve Algoritma**: Veritabanı optimizasyonu ve algoritma tasarımı
+- **Database**: Veritabanı tasarım prensipleri ve best practices
+- **Tanımlar**: Yazılım geliştirme süreçlerinde kullanılan temel kavramlar
+
+### 📄 Ödev Dosyaları
+
+- `Recep Öztürk - Container : Sanallaştırma Ödevi.docx`
+- `Recep Öztürk - Network Ödevi.docx`
+- `Recep Öztürk - SQL ve Algoritma Ödevi.docx`
+- `Recep Öztürk - Database Ödevi.docx`
+- `Recep Öztürk - Tanımlar Ödevi.docx`
+
 ## 📱 Ekran Görüntüleri
 
 ### Ana Sayfa
 ![Ana Sayfa](screenshots/anasayfa.png)
 
 ### Kullanıcı Girişi
-![Giriş](screenshots/giriş.png)
+![Giriş](screenshots/giris.png)
 
 ### Kayıt Ol
-![Kayıt Ol](screenshots/kayıt-ol.png)
+![Kayıt Ol](screenshots/kayit-ol.png)
 
 ### Profil Bilgileri
 ![Profil Bilgileri](screenshots/profil-bilgileri.png)
@@ -102,8 +124,6 @@ VetLine/
 
 ### Admin Dashboard
 ![Admin Panel](screenshots/admin-dashboard.png)
-
-### 
 
 ## 🗄️ Veritabanı Yapısı
 
@@ -150,9 +170,20 @@ Uygulama test edilirken aşağıdaki senaryolar kullanılmıştır:
 - **User Acceptance Tests**: Kullanıcı senaryoları
 - **Security Tests**: Authentication ve authorization testleri
 
+## 📋 Proje Dosyaları
+
+### 📱 VetLine Web Uygulaması
+- **VetLineApp/**: Ana web uygulaması projesi
+- **VetLineMockUp.pdf**: Proje mockup ve tasarım dokümanı
+
+### 📸 Ekran Görüntüleri
+- **screenshots/**: Uygulama ekran görüntüleri ve diyagramlar
+
 ## 👨‍💻 Geliştirici
 
 **Recep Öztürk** - [GitHub Profili](https://github.com/recepztrk)
+
+**Staj Yeri**: Cumhurbaşkanlığı Yazılım Daire Başkanlığı
 
 ## 🙏 Teşekkürler
 
@@ -160,6 +191,7 @@ Uygulama test edilirken aşağıdaki senaryolar kullanılmıştır:
 - Entity Framework ekibine
 - Bootstrap ekibine
 - Tüm open source topluluğuna
+- Cumhurbaşkanlığı Yazılım Daire Başkanlığı ekibine
 
 ## 📞 İletişim
 
@@ -170,6 +202,17 @@ Uygulama test edilirken aşağıdaki senaryolar kullanılmıştır:
 ---
 
 ⭐ Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!
-# tccb-staj
-Cumhurbaşkanlığı Yazılım Daire Başkanlığı’nda yaptığım staj kapsamında geliştirdiğim projeler ve ek çalışmalar.
->>>>>>> c5ffd968022cb99471689e3721830ed65f11bf40
+
+---
+
+# 🎓 TCCB Staj Projeleri
+
+Bu repository, Cumhurbaşkanlığı Yazılım Daire Başkanlığı'nda yapılan staj kapsamında geliştirilen projeler ve ek çalışmaları içermektedir.
+
+## 📁 Repository İçeriği
+
+- **VetLineApp/**: Veteriner kliniği web uygulaması
+- **Araştırma Ödevleri/**: Staj sürecinde yapılan araştırma çalışmaları
+- **screenshots/**: Proje ekran görüntüleri ve diyagramlar
+- **VetLineMockUp.pdf**: Proje tasarım dokümanı
+
