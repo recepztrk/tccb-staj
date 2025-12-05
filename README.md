@@ -9,7 +9,7 @@
 
 VetLine, veteriner kliniği hizmetleri için geliştirilmiş modern ve kapsamlı bir web uygulamasıdır. ASP.NET Core 8.0 MVC mimarisi kullanılarak geliştirilen bu uygulama, veteriner kliniği işletmelerinin dijital dönüşümünü desteklemek amacıyla tasarlanmıştır.
 
-**Bu proje, Cumhurbaşkanlığı Yazılım Daire Başkanlığı'nda yapılan staj kapsamında geliştirilmiştir.**
+**Bu proje, yaz stajı kapsamında geliştirilmiştir.**
 
 ### 🎯 Ana Özellikler
 
@@ -191,7 +191,6 @@ Uygulama test edilirken aşağıdaki senaryolar kullanılmıştır:
 - Entity Framework ekibine
 - Bootstrap ekibine
 - Tüm open source topluluğuna
-- Cumhurbaşkanlığı Yazılım Daire Başkanlığı ekibine
 
 ## 📞 İletişim
 
@@ -207,7 +206,7 @@ Uygulama test edilirken aşağıdaki senaryolar kullanılmıştır:
 
 # 🎓 TCCB Staj Projeleri
 
-Bu repository, Cumhurbaşkanlığı Yazılım Daire Başkanlığı'nda yapılan staj kapsamında geliştirilen projeler ve ek çalışmaları içermektedir.
+Bu repository, yaz stajı kapsamında geliştirilen projeler ve ek çalışmaları içermektedir.
 
 ## 📁 Repository İçeriği
 
